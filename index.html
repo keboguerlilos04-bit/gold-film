@@ -1,0 +1,1570 @@
+<!doctype html>
+<html lang="ht">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gold Film</title>
+<meta name="theme-color" content="#17131f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{
+  --bg:#f4f2ee;--card:#fff;--text:#16141a;--muted:#6b6672;--line:#e7e2da;--chip:#f1ece3;
+  --ink:#17131f;--ink-2:#2b2140;--gold:#f2c14e;
+  --accent:#c8941a;--accent-ink:#1a1306;--head:#8a5d00;
+  --danger:#b42318;--danger-bg:#fdecea;--warn:#9a5b00;--warn-bg:#fdf1dc;--ok:#11643a;--ok-bg:#e4f4ea;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d0b12;--card:#17141f;--text:#f2eee6;--muted:#a39cad;--line:#2a2535;--chip:#241f2e;
+  --ink:#08060c;--ink-2:#221a33;
+  --accent:#e6b23a;--accent-ink:#1a1306;--head:#e6b23a;
+  --danger:#ff8a7a;--danger-bg:#3b1c1a;--warn:#f2c14e;--warn-bg:#3a2b10;--ok:#5fd398;--ok-bg:#12301f;
+}}
+:root[data-theme="dark"]{
+  --bg:#0d0b12;--card:#17141f;--text:#f2eee6;--muted:#a39cad;--line:#2a2535;--chip:#241f2e;
+  --ink:#08060c;--ink-2:#221a33;
+  --accent:#e6b23a;--accent-ink:#1a1306;--head:#e6b23a;
+  --danger:#ff8a7a;--danger-bg:#3b1c1a;--warn:#f2c14e;--warn-bg:#3a2b10;--ok:#5fd398;--ok-bg:#12301f;
+}
+:root{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);-webkit-tap-highlight-color:transparent}
+button,input,select,textarea{font:inherit;color:inherit}
+.demo{background:var(--warn-bg);color:var(--warn);font-size:12px;padding:6px 16px;text-align:center}
+header{position:sticky;top:0;z-index:5;background:var(--ink);color:#fff;padding:10px 16px;padding-top:calc(10px + env(safe-area-inset-top));display:flex;align-items:center;gap:8px}
+header h1{font-size:19px;margin:0;flex:1;color:var(--gold);font-weight:800;letter-spacing:.02em}
+.who{font-size:12px;color:#c9c3d3;text-align:right;line-height:1.25}
+.who b{color:#fff;font-weight:600}
+header .btn{background:transparent;border-color:#3a3346;color:#fff}
+main{max-width:720px;margin:0 auto;padding:16px 16px 110px}
+nav.tabs{position:fixed;bottom:0;left:0;right:0;z-index:5;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom)}
+nav.tabs button{flex:1;max-width:180px;padding:8px 4px 10px;background:none;border:0;color:var(--muted);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+nav.tabs button.on{color:var(--accent);font-weight:600}
+nav.tabs svg{width:22px;height:22px}
+.hero{background:linear-gradient(135deg,#1d1828 0%,#2b2140 55%,#4a3512 100%);padding:14px;border-radius:20px;box-shadow:0 10px 24px rgba(23,19,31,.22)}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media(min-width:560px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;min-width:0}
+.hero .stat{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.09);color:#fff}
+.hero .stat span{color:#c9c3d3}
+.stat b{display:block;font-size:24px;line-height:1.15;overflow-wrap:anywhere}
+.stat span{color:var(--muted);font-size:13px}
+.stat.late b{color:#ff8a7a} .stat.soon b{color:var(--gold)}
+.stat.profit b{color:var(--ok)} .stat.loss b{color:var(--danger)}
+.hero .stat.profit b{color:#7ee2ac}
+h2{font-size:12.5px;margin:22px 0 8px;color:var(--head);text-transform:uppercase;letter-spacing:.06em}
+.list{display:flex;flex-direction:column;gap:8px}
+.row{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 12px;display:flex;gap:10px;align-items:center;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.row.alert-late{border-color:var(--danger)} .row.alert-soon{border-color:var(--accent)}
+.row .info{flex:1;min-width:0}
+.row .info.tap{cursor:pointer}
+.row .t{font-weight:600;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.row .s{color:var(--muted);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .s.wrap{white-space:normal}
+.badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--chip);color:var(--muted);white-space:nowrap}
+.badge.late{background:var(--danger-bg);color:var(--danger)}
+.badge.soon{background:var(--warn-bg);color:var(--warn)}
+.badge.ok{background:var(--ok-bg);color:var(--ok)}
+.badge.gold{background:var(--ink);color:var(--gold)}
+.actions{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:8px 12px;font-size:14px;cursor:pointer;text-decoration:none;color:var(--text);display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700;box-shadow:0 2px 8px rgba(200,148,26,.3)}
+.btn.wa{background:#1f9d55;border-color:#1f9d55;color:#fff;font-weight:700}
+.btn.danger{color:var(--danger)}
+.btn.small{padding:5px 10px;font-size:13px}
+.btn.block{width:100%;padding:12px}
+.btn.icon{padding:7px;width:36px;height:36px}
+.btn.icon svg,.btn svg{width:19px;height:19px;flex-shrink:0}
+.btn:disabled{opacity:.45;cursor:default;box-shadow:none}
+.empty{color:var(--muted);text-align:center;padding:18px;border:1px dashed var(--line);border-radius:14px;font-size:14px}
+.fab{position:fixed;right:16px;bottom:calc(76px + env(safe-area-inset-bottom));width:56px;height:56px;border-radius:50%;background:var(--accent);color:var(--accent-ink);border:0;font-size:30px;line-height:1;box-shadow:0 6px 16px rgba(0,0,0,.25);cursor:pointer;z-index:6}
+.search{width:100%}
+.chips{display:flex;gap:6px;overflow-x:auto;margin:10px 0 12px;padding-bottom:2px;align-items:center}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 12px;font-size:13px;white-space:nowrap;cursor:pointer}
+.chip.on{background:var(--ink);color:var(--gold);border-color:var(--ink);font-weight:600}
+.bar{height:6px;background:var(--chip);border-radius:99px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--accent)}
+.bar i.full{background:var(--danger)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.panel + .panel{margin-top:10px}
+.panel h3{margin:0;font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.panel h3 .grow{flex:1}
+.kv{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px}
+.kv > span:first-child{color:var(--muted)}
+.kv > span:last-child{text-align:right;overflow-wrap:anywhere}
+.sub{color:var(--muted);font-size:13px}
+.back{background:none;border:0;color:var(--head);padding:0 0 10px;font-size:15px;cursor:pointer;font-weight:700}
+.dtitle{display:flex;align-items:center;gap:8px;margin:0 0 12px;flex-wrap:wrap}
+.dtitle h2{margin:0;font-size:22px;color:var(--text);text-transform:none;letter-spacing:-.01em;flex:1}
+.pw-row{display:flex;align-items:center;gap:6px}
+.pw{flex:1;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:17px;letter-spacing:.06em;background:var(--chip);border-radius:10px;padding:8px 10px;overflow-wrap:anywhere;min-width:0}
+.pending{background:var(--warn-bg);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.pending ol{margin:0;padding-left:20px;font-size:14px}
+.pending .t{color:var(--warn);font-weight:700}
+.big{font-size:22px;font-weight:700}
+.alert{border-radius:12px;padding:8px 10px;font-size:14px}
+.alert.late{background:var(--danger-bg);color:var(--danger)}
+.alert.soon{background:var(--warn-bg);color:var(--warn)}
+.alert.ok{background:var(--ok-bg);color:var(--ok)}
+.wallet{border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.ledger{font-size:13px;display:flex;flex-direction:column;gap:4px}
+.ledger div{display:flex;justify-content:space-between;gap:8px;color:var(--muted)}
+.ledger b{color:var(--text);font-weight:600}
+details summary{cursor:pointer;color:var(--muted);font-size:13px}
+dialog{border:0;border-radius:20px;padding:0;width:min(520px,calc(100% - 24px));max-height:calc(100% - 24px);background:var(--card);color:var(--text)}
+dialog::backdrop{background:rgba(8,6,12,.6)}
+form.f{padding:18px;display:flex;flex-direction:column;gap:12px}
+form.f h3{margin:0 0 2px;font-size:18px}
+form.f .sub{margin:-8px 0 0}
+label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+label.check{flex-direction:row;align-items:center;gap:8px;color:var(--text);font-size:15px}
+input,select,textarea{font-size:16px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--bg);width:100%}
+input[type=checkbox]{width:20px;height:20px}
+input.pin{font-size:26px;letter-spacing:.5em;text-align:center;font-family:ui-monospace,Menlo,Consolas,monospace}
+textarea{min-height:64px;resize:vertical}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.money-in{display:grid;grid-template-columns:1fr 96px;gap:8px}
+.fbtns{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:4px}
+.fbtns .spacer{flex:1}
+.note{background:var(--chip);border-radius:12px;padding:10px;font-size:14px}
+.msg{background:#e7f6dd;color:#16261a;border-radius:14px 14px 14px 4px;padding:10px 12px;font-size:14px;white-space:pre-wrap;line-height:1.4}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .msg{background:#1f3a2a;color:#e6f4ea}}
+:root[data-theme="dark"] .msg{background:#1f3a2a;color:#e6f4ea}
+.err{color:var(--danger);font-size:14px;min-height:1em}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:60;max-width:calc(100% - 32px);box-shadow:0 6px 16px rgba(0,0,0,.3)}
+.login{max-width:400px;margin:0 auto;padding:0 16px 40px}
+.login .brand{background:linear-gradient(135deg,#1d1828 0%,#2b2140 55%,#4a3512 100%);border-radius:0 0 28px 28px;margin:0 -16px 20px;padding:56px 24px 34px;text-align:center;color:#fff}
+.login .brand h1{margin:0;color:var(--gold);font-size:34px;font-weight:800;letter-spacing:.02em}
+.login .brand p{margin:6px 0 0;color:#c9c3d3}
+.login .card{background:var(--card);border:1px solid var(--line);border-radius:20px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--chip);border-radius:12px;padding:4px;gap:4px;margin:16px 16px 0}
+.seg button{border:0;background:none;padding:8px;border-radius:9px;cursor:pointer;font-weight:600;color:var(--muted)}
+.seg button.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.money3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.money3 .stat b{font-size:16px}
+.ratebar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:10px;font-size:14px}
+.ratebar span{flex:1}
+.mrow{display:flex;gap:10px;align-items:flex-end;margin-bottom:12px;flex-wrap:wrap}
+.mrow label{flex:1;min-width:140px}
+.amt{font-weight:600;white-space:nowrap}
+.amt.out{color:var(--danger)} .amt.in{color:var(--ok)}
+table.avg{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:14px}
+table.avg th,table.avg td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+table.avg th:first-child,table.avg td:first-child{text-align:left}
+table.avg thead th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase}
+table.avg tfoot td{font-weight:700;border-bottom:0}
+table.avg tfoot tr:first-child td{border-top:2px solid var(--line)}
+.neg{color:var(--danger)} .pos{color:var(--ok)}
+.tablewrap{overflow-x:auto}
+.loading{color:var(--muted);text-align:center;padding:40px}
+.pinbox{display:flex;align-items:center;gap:8px;background:var(--chip);border-radius:14px;padding:10px 12px}
+.pinbox .pv{flex:1;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:22px;letter-spacing:.35em}
+.lock{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--warn)}
+.lock svg{width:14px;height:14px}
+.receipt{text-align:center;display:flex;flex-direction:column;gap:4px;align-items:center}
+.receipt .ok-ic{width:56px;height:56px;border-radius:50%;background:var(--ok-bg);color:var(--ok);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700}
+.receipt .amtbig{font-size:28px;font-weight:800}
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.member{display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--ink);color:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.member .info{flex:1;min-width:0}
+.member select{width:auto;padding:6px 8px;font-size:14px}
+</style>
+</head>
+<body>
+<div id="app"><div class="loading">…</div></div>
+<dialog id="dlg"></dialog>
+
+<script src="config.js"></script>
+<script type="module">
+// =====================================================================
+//  Konfigirasyon
+// =====================================================================
+const C = Object.assign({
+  SUPABASE_URL: '', SUPABASE_ANON_KEY: '', BUSINESS_NAME: 'Gold Film', DEFAULT_CURRENCY: 'HTG', DEFAULT_PRICE: 0,
+  COUNTRY_CODE: '509', DUE_SOON_DAYS: 3, CARD_ALERT_DAYS: 7, SERVICE_NAME: 'Netflix',
+}, window.APP_CONFIG || {});
+const DEMO = !C.SUPABASE_URL || !C.SUPABASE_ANON_KEY;
+const SOON = Number(C.DUE_SOON_DAYS) || 3;
+const CARD_DAYS = Number(C.CARD_ALERT_DAYS) || 7;
+const MAX_OWNERS = 3, MAX_ASSOCS = 3;
+
+// =====================================================================
+//  Lang (HT / FR)
+// =====================================================================
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch { /* pa grav */ } },
+};
+let LANG = store.get('gf-lang') === 'fr' ? 'fr' : 'ht';
+const t = (ht, fr) => (LANG === 'fr' ? fr : ht);
+const tl = (lang, ht, fr) => (lang === 'fr' ? fr : ht);
+document.documentElement.lang = LANG;
+let THEME = ['light', 'dark'].includes(store.get('gf-theme')) ? store.get('gf-theme') : 'auto';
+function applyTheme() {
+  if (THEME === 'auto') delete document.documentElement.dataset.theme;
+  else document.documentElement.dataset.theme = THEME;
+}
+applyTheme();
+
+// =====================================================================
+//  Ti zouti
+// =====================================================================
+const $ = (s, el = document) => el.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const MO = { ht: ['jan', 'fev', 'mas', 'avr', 'me', 'jen', 'jiy', 'out', 'sep', 'okt', 'nov', 'des'], fr: ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'] };
+const MO_LONG = { ht: ['Janvye', 'Fevriye', 'Mas', 'Avril', 'Me', 'Jen', 'Jiyè', 'Out', 'Septanm', 'Oktòb', 'Novanm', 'Desanm'], fr: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'] };
+const pad = (n) => String(n).padStart(2, '0');
+const todayStr = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
+const parseD = (s) => { const [y, m, d] = s.split('-').map(Number); return Date.UTC(y, m - 1, d); };
+const daysUntil = (s) => Math.round((parseD(s) - parseD(todayStr())) / 86400000);
+const fmtDateL = (s, lang) => { if (!s) return '—'; const [y, m, d] = String(s).slice(0, 10).split('-').map(Number); return `${d} ${MO[lang][m - 1]} ${y}`; };
+const fmtDate = (s) => fmtDateL(s, LANG);
+const fmtMonth = (ym) => { const [y, m] = ym.split('-').map(Number); return `${MO_LONG[LANG][m - 1]} ${y}`; };
+const isoDay = (ms) => { const d = new Date(ms); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
+const addDays = (s, n) => { const x = new Date(parseD(s) + n * 86400000); return `${x.getUTCFullYear()}-${pad(x.getUTCMonth() + 1)}-${pad(x.getUTCDate())}`; };
+const addMonths = (s, n) => {
+  const [y, m, d] = s.split('-').map(Number);
+  const first = new Date(Date.UTC(y, m - 1 + n, 1));
+  const last = new Date(Date.UTC(first.getUTCFullYear(), first.getUTCMonth() + 1, 0)).getUTCDate();
+  return `${first.getUTCFullYear()}-${pad(first.getUTCMonth() + 1)}-${pad(Math.min(d, last))}`;
+};
+const addMonthsYM = (ym, n) => addMonths(`${ym}-01`, n).slice(0, 7);
+const monthEnd = (ym) => { const [y, m] = ym.split('-').map(Number); return `${ym}-${pad(new Date(Date.UTC(y, m, 0)).getUTCDate())}`; };
+const dueAfterPayment = (due, months) => { let n = addMonths(due, months); if (n <= todayStr()) n = addMonths(todayStr(), months); return n; };
+const r2 = (n) => Math.round((Number(n) || 0) * 100) / 100;
+const usdF = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const htgF = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 2 });
+const fmt = (n, cur) => cur === 'USD' ? `${Number(n) < 0 ? '−' : ''}$${usdF.format(Math.abs(Number(n) || 0))}` : `${htgF.format(Number(n) || 0)} HTG`;
+const conv = (amount, from, rate, to) => {
+  amount = Number(amount) || 0; rate = Number(rate) || 1;
+  if (from === to) return amount;
+  return from === 'USD' ? amount * rate : amount / rate;
+};
+const curOpts = (sel) => ['HTG', 'USD'].map((c) => `<option ${c === sel ? 'selected' : ''}>${c}</option>`).join('');
+const isOwner = () => !!S.me && S.me.role === 'owner';
+const isPrincipal = () => !!S.me && !!S.me.principal;
+const monthsWord = (n, lang) => tl(lang, `${n} mwa`, `${n} mois`);
+
+const ICON = {
+  today: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>',
+  clients: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/><path d="M16 4a4 4 0 0 1 0 8M22 21c0-3-1.5-5-4-5.7"/></svg>',
+  accounts: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="13" rx="2"/><path d="M8 22h8M12 18v4"/></svg>',
+  money: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg>',
+  wa: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1-.7-.3-1.4-.7-2-1.3-.5-.5-1-1.1-1.3-1.7-.1-.2 0-.4.1-.5l.4-.5.3-.4v-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 4.9 4.3 1.8.8 2.5.8 3.4.7.6-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>',
+  key: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3 21 2M16 7l3 3M18.5 4.5l2 2"/></svg>',
+  lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
+  refresh: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v6h-6"/></svg>',
+  gear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+  eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+  copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>',
+  send: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>',
+};
+
+let toastTimer;
+function toast(msg) {
+  document.querySelectorAll('.toast').forEach((x) => x.remove());
+  const el = document.createElement('div');
+  el.className = 'toast'; el.textContent = msg; el.setAttribute('role', 'status');
+  document.body.appendChild(el);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.remove(), 3500);
+}
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); }
+  catch {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } finally { ta.remove(); }
+  }
+  toast(t('Kopye.', 'Copié.'));
+}
+function generatePassword() {
+  const U = 'ABCDEFGHJKMNPQRSTUVWXYZ', L = 'abcdefghjkmnpqrstuvwxyz', D = '23456789', A = U + L + D;
+  const rnd = (n) => { const b = new Uint32Array(1); crypto.getRandomValues(b); return b[0] % n; };
+  for (;;) {
+    let s = '';
+    for (let i = 0; i < 12; i++) s += A[rnd(A.length)];
+    if (/[A-Z]/.test(s) && /[a-z]/.test(s) && /[0-9]/.test(s)) return `${s.slice(0, 4)}-${s.slice(4, 8)}-${s.slice(8)}`;
+  }
+}
+
+// =====================================================================
+//  Done: Supabase (baz done a ap mete ajou apre konfimasyon ekran yo)
+// =====================================================================
+function supabaseApi(sb) {
+  const q = async (p) => { const { data, error } = await p; if (error) throw new Error(error.message); return data; };
+  const rpc = (fn, args) => q(sb.rpc(fn, args));
+  const strip = (o) => { const c = { ...o }; delete c.id; delete c.created_at; return c; };
+  const save = (table, o) => o.id ? q(sb.from(table).update(strip(o)).eq('id', o.id)) : q(sb.from(table).insert(strip(o)));
+  return {
+    async session() { const { data } = await sb.auth.getSession(); return data.session; },
+    async signIn(email, password) {
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) throw new Error(error.message.includes('Invalid') ? t('Imèl oswa modpas pa bon.', 'E-mail ou mot de passe incorrect.') : error.message);
+    },
+    async signUp(name, email, password) {
+      const { data, error } = await sb.auth.signUp({ email, password, options: { data: { name } } });
+      if (error) throw new Error(error.message);
+      return !!data.session;
+    },
+    async requestAccess() {
+      const { data: { user } } = await sb.auth.getUser();
+      return rpc('request_access', { p_name: (user && user.user_metadata && user.user_metadata.name) || '' });
+    },
+    async signOut() { await sb.auth.signOut(); },
+    async me() {
+      const { data: { user } } = await sb.auth.getUser();
+      if (!user) return null;
+      const rows = await q(sb.from('app_users').select('*').eq('id', user.id));
+      return rows[0] || { id: user.id, role: 'none', name: (user.user_metadata || {}).name || '', email: user.email };
+    },
+    async loadAll(owner) {
+      const [settings, users, accounts, extras, clients, passwords, ledger] = await Promise.all([
+        q(sb.from('settings').select('*').eq('id', 1)),
+        q(sb.from('app_users').select('*')),
+        q(sb.from('accounts').select('*').order('label')),
+        q(sb.from('extra_slots').select('*').order('id')),
+        q(sb.from('clients').select('*').order('name')),
+        q(sb.from('account_passwords').select('*').order('id')),
+        owner ? q(sb.from('card_ledger').select('*').order('entry_date').order('id')) : Promise.resolve([]),
+      ]);
+      return { settings: settings[0], users, accounts, extras, clients, passwords, ledger };
+    },
+    processBilling: () => rpc('process_billing'),
+    saveAccount: (a) => save('accounts', a),
+    deleteAccount: (id) => q(sb.from('accounts').delete().eq('id', id)),
+    saveExtra: (x) => save('extra_slots', x),
+    saveClient: (c) => save('clients', c),
+    deleteClient: (id) => q(sb.from('clients').delete().eq('id', id)),
+    recordPayment: (id, amount, currency, months) => rpc('record_payment', { p_client_id: id, p_amount: amount, p_currency: currency, p_months: months }),
+    setPin: (id, pin) => rpc('set_client_pin', { p_client_id: id, p_pin: pin }),
+    addCard: (aid, xid, usd, paid, cur, date) => rpc('add_card', { p_account_id: aid, p_extra_id: xid, p_amount_usd: usd, p_paid_amount: paid, p_paid_currency: cur, p_date: date }),
+    adjustBalance: (aid, xid, bal) => rpc('adjust_balance', { p_account_id: aid, p_extra_id: xid, p_new_balance: bal }),
+    setRate: (rate) => rpc('set_rate', { p_rate: rate }),
+    proposePassword: (aid, pw) => rpc('propose_password', { p_account_id: aid, p_password: pw }),
+    confirmPassword: (aid) => rpc('confirm_password', { p_account_id: aid }),
+    cancelPassword: (aid) => rpc('cancel_password', { p_account_id: aid }),
+    setMemberRole: (uid, role) => rpc('set_member_role', { p_user_id: uid, p_role: role }),
+    listPayments: (from, to) => q(sb.from('payments').select('*').gte('paid_on', from).lte('paid_on', to).order('paid_on', { ascending: false }).order('id', { ascending: false })),
+  };
+}
+
+// =====================================================================
+//  Done: Mòd demo
+// =====================================================================
+function demoApi() {
+  const KEY = 'goldfilm-demo-v3';
+  const nowIso = () => new Date().toISOString();
+  let db = null;
+  try { db = JSON.parse(localStorage.getItem(KEY)); } catch { db = null; }
+  if (!db) db = seed();
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch { /* */ } };
+  const clone = (x) => JSON.parse(JSON.stringify(x));
+  const nid = () => ++db.seq;
+  const me = () => db.users.find((u) => u.id === db.as);
+  const role = () => (me() || {}).role;
+  const need = (ok, msg) => { if (!ok) throw new Error(msg); };
+
+  function seed() {
+    const tdy = todayStr();
+    const ago = (n) => addDays(tdy, -n);
+    const agoIso = (days) => new Date(Date.now() - days * 86400000).toISOString();
+    const d = {
+      seq: 1000, as: 'u1',
+      settings: { id: 1, usd_rate: 132, pin_lock_days: 3, updated_at: nowIso(), updated_by: 'u1' },
+      users: [
+        { id: 'u1', name: 'Keby', email: 'keby@example.com', role: 'owner', code: 'P1', principal: true },
+        { id: 'u2', name: 'Woodly', email: 'woodly@example.com', role: 'owner', code: 'P2', principal: false },
+        { id: 'u3', name: 'Mika', email: 'mika@example.com', role: 'associate', code: 'A1', principal: false },
+        { id: 'u4', name: 'Stephanie', email: 'steph@example.com', role: 'pending', code: null, principal: false },
+      ],
+      accounts: [
+        { id: 1, label: 'Kont A', login_email: 'konta@example.com', plan: 'Premium', plan_price_usd: 13.5, extra_price_usd: 6.99, main_slots: 4, next_billing: addDays(tdy, 4), notes: '', active: true },
+        { id: 2, label: 'Kont B', login_email: 'kontb@example.com', plan: 'Premium', plan_price_usd: 13.5, extra_price_usd: 6.99, main_slots: 4, next_billing: addDays(tdy, 2), notes: '', active: true },
+      ],
+      extras: [
+        { id: 51, account_id: 1, label: 'Siplemantè 1', email: 'lucie@example.com', billing: 'shared', price_usd: 6.99, next_billing: null, active: true },
+        { id: 52, account_id: 2, label: 'Siplemantè 1', email: 'ricardo@example.com', billing: 'own', price_usd: 6.99, next_billing: addDays(tdy, 10), active: true },
+      ],
+      clients: [
+        { id: 11, name: 'Marie Joseph', phone: '34001122', account_id: 1, slot_type: 'main', extra_id: null, profile_name: 'Marie', price: 1000, currency: 'HTG', lang: 'ht', next_due: ago(2), status: 'active', notes: '', pin: '4821', pin_set_at: agoIso(1), pin_set_by: 'u3' },
+        { id: 12, name: 'Jean Pierre', phone: '37112233', account_id: 1, slot_type: 'main', extra_id: null, profile_name: 'Jean', price: 1000, currency: 'HTG', lang: 'ht', next_due: addDays(tdy, 1), status: 'active', notes: '', pin: '1590', pin_set_at: agoIso(6), pin_set_by: 'u1' },
+        { id: 13, name: 'Rose Charles', phone: '48223344', account_id: 1, slot_type: 'main', extra_id: null, profile_name: 'Rose', price: 1000, currency: 'HTG', lang: 'ht', next_due: addDays(tdy, 9), status: 'active', notes: '', pin: null, pin_set_at: null, pin_set_by: null },
+        { id: 14, name: 'Lucie Benoit', phone: '38556677', account_id: 1, slot_type: 'extra', extra_id: 51, profile_name: null, price: 10, currency: 'USD', lang: 'fr', next_due: addDays(tdy, 20), status: 'active', notes: '', pin: null, pin_set_at: null, pin_set_by: null },
+        { id: 15, name: 'Paul Louis', phone: '31334455', account_id: 2, slot_type: 'main', extra_id: null, profile_name: 'Paul', price: 1000, currency: 'HTG', lang: 'fr', next_due: addDays(tdy, 15), status: 'active', notes: '', pin: '7302', pin_set_at: agoIso(20), pin_set_by: 'u2' },
+        { id: 16, name: 'Nadège Eugène', phone: '36445566', account_id: 2, slot_type: 'main', extra_id: null, profile_name: 'Nadège', price: 1000, currency: 'HTG', lang: 'ht', next_due: ago(9), status: 'paused', notes: '', pin: '6614', pin_set_at: agoIso(0.1), pin_set_by: 'u3' },
+        { id: 17, name: 'Ricardo Jean', phone: '33667788', account_id: 2, slot_type: 'extra', extra_id: 52, profile_name: null, price: 1300, currency: 'HTG', lang: 'ht', next_due: addDays(tdy, 11), status: 'active', notes: '', pin: null, pin_set_at: null, pin_set_by: null },
+      ],
+      payments: [],
+      ledger: [
+        { id: 101, account_id: 1, extra_id: null, kind: 'card', amount_usd: 40.98, paid_amount: 5400, paid_currency: 'HTG', paid_rate: 130, entry_date: addMonths(ago(5), -3), note: '' },
+        { id: 102, account_id: 1, extra_id: null, kind: 'charge', amount_usd: -20.49, entry_date: addMonths(addDays(tdy, 4), -3), note: '' },
+        { id: 103, account_id: 1, extra_id: null, kind: 'charge', amount_usd: -20.49, entry_date: addMonths(addDays(tdy, 4), -2), note: '' },
+        { id: 104, account_id: 1, extra_id: null, kind: 'card', amount_usd: 40.98, paid_amount: 5500, paid_currency: 'HTG', paid_rate: 131, entry_date: addMonths(ago(5), -1), note: '' },
+        { id: 105, account_id: 1, extra_id: null, kind: 'charge', amount_usd: -20.49, entry_date: addMonths(addDays(tdy, 4), -1), note: '' },
+        { id: 106, account_id: 2, extra_id: null, kind: 'card', amount_usd: 27, paid_amount: 3550, paid_currency: 'HTG', paid_rate: 130, entry_date: addMonths(ago(8), -3), note: '' },
+        { id: 107, account_id: 2, extra_id: null, kind: 'charge', amount_usd: -13.5, entry_date: addMonths(addDays(tdy, 2), -3), note: '' },
+        { id: 108, account_id: 2, extra_id: null, kind: 'charge', amount_usd: -13.5, entry_date: addMonths(addDays(tdy, 2), -2), note: '' },
+        { id: 109, account_id: 2, extra_id: null, kind: 'card', amount_usd: 17.5, paid_amount: 2350, paid_currency: 'HTG', paid_rate: 132, entry_date: addMonths(ago(6), -1), note: '' },
+        { id: 110, account_id: 2, extra_id: null, kind: 'charge', amount_usd: -13.5, entry_date: addMonths(addDays(tdy, 2), -1), note: '' },
+        { id: 111, account_id: 2, extra_id: 52, kind: 'card', amount_usd: 13.98, paid_amount: 1850, paid_currency: 'HTG', paid_rate: 132, entry_date: ago(20), note: '' },
+      ],
+      passwords: [
+        { id: 201, account_id: 1, password: 'Wm4t-Hq8z-Kp2r', status: 'old', created_at: agoIso(40), created_by: 'u1', confirmed_at: agoIso(40), confirmed_by: 'u1' },
+        { id: 202, account_id: 1, password: 'Hq7m-Rp4k-Tz9w', status: 'active', created_at: agoIso(8), created_by: 'u1', confirmed_at: agoIso(8), confirmed_by: 'u1' },
+        { id: 203, account_id: 2, password: 'Bn3x-Vc6y-Mz5q', status: 'active', created_at: agoIso(15), created_by: 'u3', confirmed_at: agoIso(15), confirmed_by: 'u3' },
+        { id: 204, account_id: 2, password: 'Fr8k-Ld2s-Pw7e', status: 'pending', created_at: agoIso(0), created_by: 'u2', confirmed_at: null, confirmed_by: null },
+      ],
+    };
+    let pid = 300;
+    const by = ['u1', 'u2', 'u3'];
+    for (let m = 3; m >= 0; m--) {
+      d.clients.forEach((c) => {
+        const day = addDays(addMonths(tdy, -m), -((c.id * 3) % 20));
+        if (day > tdy) return;
+        d.payments.push({ id: ++pid, client_id: c.id, client_name: c.name, amount: c.price, currency: c.currency, rate: 130 + m, months: 1, paid_on: day, recorded_by: by[c.id % 3] });
+      });
+    }
+    return d;
+  }
+
+  const accountCostDb = (a) => r2(Number(a.plan_price_usd) + db.extras.filter((x) => x.account_id === a.id && x.active && x.billing === 'shared').reduce((s, x) => s + Number(x.price_usd), 0));
+  const balDb = (aid, xid) => r2(db.ledger.filter((l) => l.account_id === aid && (l.extra_id ?? null) === (xid ?? null)).reduce((s, l) => s + Number(l.amount_usd), 0));
+  function checkClient(c) {
+    if (c.slot_type === 'main') c.extra_id = null;
+    if (!c.account_id || c.status === 'left') return;
+    if (c.slot_type === 'main') {
+      const a = db.accounts.find((x) => x.id === c.account_id);
+      const used = db.clients.filter((x) => x.account_id === c.account_id && x.slot_type === 'main' && x.status !== 'left' && x.id !== c.id).length;
+      need(used < a.main_slots, t(`Pa gen plas nòmal lib sou kont sa a (${used} / ${a.main_slots})`, `Aucune place normale libre sur ce compte (${used} / ${a.main_slots})`));
+    } else {
+      need(c.extra_id, t('Chwazi ki plas siplemantè kliyan an ap okipe', 'Choisissez la place supplémentaire du client'));
+      const x = db.extras.find((e) => e.id === c.extra_id);
+      need(x && x.account_id === c.account_id && x.active, t('Plas siplemantè sa a pa sou kont sa a', "Cette place supplémentaire n'est pas sur ce compte"));
+      need(!db.clients.some((o) => o.extra_id === c.extra_id && o.status !== 'left' && o.id !== c.id), t('Gen yon lòt kliyan deja sou plas siplemantè sa a', 'Un autre client occupe déjà cette place'));
+    }
+  }
+  function checkExtra(x, old) {
+    if (x.active) need(db.extras.filter((e) => e.account_id === x.account_id && e.active && e.id !== x.id).length < 2, t('Yon kont pa ka gen plis pase 2 plas siplemantè', 'Un compte ne peut pas avoir plus de 2 places supplémentaires'));
+    else if (old && old.active) need(!db.clients.some((c) => c.extra_id === x.id && c.status !== 'left'), t('Gen yon kliyan sou plas sa a. Deplase l oswa make l "Kite" anvan.', 'Un client occupe cette place. Déplacez-le ou marquez-le « Parti » d’abord.'));
+    need(x.billing === 'shared' || x.next_billing, t('Mete dat retrè pou plas sa a', 'Indiquez la date de prélèvement'));
+  }
+  const upsert = (list, obj, check) => {
+    if (obj.id) {
+      const i = db[list].findIndex((x) => x.id === obj.id);
+      const merged = { ...db[list][i], ...obj };
+      if (check) check(merged, db[list][i]);
+      db[list][i] = merged;
+    } else {
+      const n = { ...obj, id: nid() };
+      if (check) check(n, null);
+      db[list].push(n);
+    }
+    save();
+  };
+  const ownerOnly = () => need(role() === 'owner', t('Se yon pwopriyetè sèlman ki ka fè sa', 'Réservé aux propriétaires'));
+
+  return {
+    async session() { return { demo: true }; },
+    async signIn() {},
+    async signUp() { return true; },
+    async requestAccess() { return 'owner'; },
+    async signOut() { try { localStorage.removeItem(KEY); } catch { /* */ } },
+    async me() { return clone(me()); },
+    viewAs(uid) { db.as = uid; save(); },
+    async loadAll(owner) {
+      return clone({ settings: db.settings, users: db.users, accounts: db.accounts, extras: db.extras, clients: db.clients, passwords: db.passwords, ledger: owner ? db.ledger : [] });
+    },
+    async processBilling() {
+      const tdy = todayStr();
+      let n = 0;
+      db.accounts.filter((a) => a.active).forEach((a) => {
+        const cost = accountCostDb(a);
+        if (cost <= 0) return;
+        for (let i = 0; i < 24 && a.next_billing <= tdy && balDb(a.id, null) >= cost; i++) {
+          db.ledger.push({ id: nid(), account_id: a.id, extra_id: null, kind: 'charge', amount_usd: -cost, entry_date: a.next_billing });
+          a.next_billing = addMonths(a.next_billing, 1); n++;
+        }
+      });
+      db.extras.filter((x) => x.active && x.billing === 'own').forEach((x) => {
+        if (!(x.price_usd > 0)) return;
+        for (let i = 0; i < 24 && x.next_billing <= tdy && balDb(x.account_id, x.id) >= x.price_usd; i++) {
+          db.ledger.push({ id: nid(), account_id: x.account_id, extra_id: x.id, kind: 'charge', amount_usd: -x.price_usd, entry_date: x.next_billing });
+          x.next_billing = addMonths(x.next_billing, 1); n++;
+        }
+      });
+      if (n) save();
+      return n;
+    },
+    async saveAccount(a) { ownerOnly(); upsert('accounts', a); },
+    async deleteAccount(id) {
+      ownerOnly();
+      const xs = db.extras.filter((x) => x.account_id === id).map((x) => x.id);
+      db.accounts = db.accounts.filter((a) => a.id !== id);
+      db.extras = db.extras.filter((x) => x.account_id !== id);
+      db.ledger = db.ledger.filter((l) => l.account_id !== id);
+      db.passwords = db.passwords.filter((p) => p.account_id !== id);
+      db.clients.forEach((c) => { if (c.account_id === id) c.account_id = null; if (xs.includes(c.extra_id)) c.extra_id = null; });
+      save();
+    },
+    async saveExtra(x) { ownerOnly(); upsert('extras', x, checkExtra); },
+    async saveClient(c) { const p = { ...c }; delete p.pin; delete p.pin_set_at; delete p.pin_set_by; upsert('clients', p, checkClient); },
+    async deleteClient(id) {
+      ownerOnly();
+      db.clients = db.clients.filter((c) => c.id !== id);
+      db.payments.forEach((p) => { if (p.client_id === id) p.client_id = null; });
+      save();
+    },
+    async recordPayment(id, amount, currency, months) {
+      need(months >= 1 && months <= 12 && amount >= 0, t('Done yo pa valid', 'Données invalides'));
+      const c = db.clients.find((x) => x.id === id);
+      c.next_due = dueAfterPayment(c.next_due, months);
+      if (c.status !== 'left') c.status = 'active';
+      db.payments.push({ id: nid(), client_id: id, client_name: c.name, amount, currency, rate: db.settings.usd_rate, months, paid_on: todayStr(), recorded_by: db.as });
+      save();
+      return c.next_due;
+    },
+    async setPin(id, pin) {
+      need(/^\d{4}$/.test(pin), t('PIN nan dwe gen 4 chif', 'Le PIN doit avoir 4 chiffres'));
+      const c = db.clients.find((x) => x.id === id);
+      if (c.pin_set_at) {
+        const until = new Date(c.pin_set_at).getTime() + db.settings.pin_lock_days * 86400000;
+        need(Date.now() >= until, t(`PIN nan bloke jiska ${fmtDate(isoDay(until))}`, `PIN bloqué jusqu’au ${fmtDate(isoDay(until))}`));
+      }
+      Object.assign(c, { pin, pin_set_at: nowIso(), pin_set_by: db.as });
+      save();
+    },
+    async addCard(aid, xid, usd, paid, cur, date) {
+      ownerOnly();
+      db.ledger.push({ id: nid(), account_id: aid, extra_id: xid || null, kind: 'card', amount_usd: usd, paid_amount: paid || 0, paid_currency: cur || 'HTG', paid_rate: db.settings.usd_rate, entry_date: date || todayStr() });
+      save();
+    },
+    async adjustBalance(aid, xid, bal) {
+      ownerOnly();
+      const diff = r2(bal - balDb(aid, xid || null));
+      if (diff !== 0) db.ledger.push({ id: nid(), account_id: aid, extra_id: xid || null, kind: 'adjust', amount_usd: diff, entry_date: todayStr() });
+      save();
+    },
+    async setRate(rate) { ownerOnly(); db.settings = { ...db.settings, usd_rate: rate, updated_at: nowIso(), updated_by: db.as }; save(); },
+    async proposePassword(aid, pw) {
+      db.passwords = db.passwords.filter((p) => !(p.account_id === aid && p.status === 'pending'));
+      db.passwords.push({ id: nid(), account_id: aid, password: pw, status: 'pending', created_at: nowIso(), created_by: db.as, confirmed_at: null, confirmed_by: null });
+      save();
+    },
+    async confirmPassword(aid) {
+      const p = db.passwords.find((x) => x.account_id === aid && x.status === 'pending');
+      db.passwords.forEach((x) => { if (x.account_id === aid && x.status === 'active') x.status = 'old'; });
+      Object.assign(p, { status: 'active', confirmed_at: nowIso(), confirmed_by: db.as });
+      const olds = db.passwords.filter((x) => x.account_id === aid && x.status === 'old').sort((a, b) => String(b.confirmed_at).localeCompare(String(a.confirmed_at)));
+      const drop = new Set(olds.slice(2).map((x) => x.id));
+      db.passwords = db.passwords.filter((x) => !drop.has(x.id));
+      save();
+    },
+    async cancelPassword(aid) { db.passwords = db.passwords.filter((p) => !(p.account_id === aid && p.status === 'pending')); save(); },
+    async setMemberRole(uid, newRole) {
+      need(me().principal, t('Se pwopriyetè prensipal la sèlman ki jere ekip la', 'Seul le propriétaire principal gère l’équipe'));
+      const u = db.users.find((x) => x.id === uid);
+      need(u && !u.principal, t('Ou pa ka chanje wòl pwopriyetè prensipal la', 'Impossible de modifier le propriétaire principal'));
+      if (newRole === 'remove') { db.users = db.users.filter((x) => x.id !== uid); save(); return; }
+      const others = db.users.filter((x) => x.role === newRole && x.id !== uid);
+      need(others.length < (newRole === 'owner' ? MAX_OWNERS : MAX_ASSOCS), newRole === 'owner' ? t('Deja gen 3 pwopriyetè', 'Il y a déjà 3 propriétaires') : t('Deja gen 3 asosye', 'Il y a déjà 3 associés'));
+      const prefix = newRole === 'owner' ? 'P' : 'A';
+      const used = new Set(others.map((x) => x.code));
+      let n = 1; while (used.has(prefix + n)) n++;
+      Object.assign(u, { role: newRole, code: prefix + n });
+      save();
+    },
+    async listPayments(from, to) {
+      ownerOnly();
+      return clone(db.payments.filter((p) => p.paid_on >= from && p.paid_on <= to)).sort((a, b) => b.paid_on.localeCompare(a.paid_on) || b.id - a.id);
+    },
+  };
+}
+
+// =====================================================================
+//  Eta app la
+// =====================================================================
+const S = {
+  me: null, settings: { usd_rate: 130 }, users: [], accounts: [], extras: [], clients: [], passwords: [], ledger: [],
+  tab: 'today', view: null, accountId: null, q: '', filter: 'all',
+  money: { mode: 'month', month: todayStr().slice(0, 7), end: todayStr().slice(0, 7), count: 3, cur: 'HTG' },
+};
+const app = $('#app');
+const dlg = $('#dlg');
+let api;
+
+const rate = () => Number(S.settings.usd_rate) || 1;
+const acc = (id) => S.accounts.find((a) => a.id === id);
+const cli = (id) => S.clients.find((c) => c.id === id);
+const ext = (id) => S.extras.find((x) => x.id === id);
+const user = (id) => S.users.find((u) => u.id === id);
+const who = (id) => { const u = user(id); return u ? (u.code || u.name) : '—'; };
+const activeExtras = (aid) => S.extras.filter((x) => x.account_id === aid && x.active);
+const mainUsed = (aid) => S.clients.filter((c) => c.account_id === aid && c.slot_type === 'main' && c.status !== 'left').length;
+const occupant = (xid) => S.clients.find((c) => c.extra_id === xid && c.status !== 'left');
+const accountCost = (a) => r2(Number(a.plan_price_usd) + activeExtras(a.id).filter((x) => x.billing === 'shared').reduce((s, x) => s + Number(x.price_usd), 0));
+const balanceOf = (aid, xid) => r2(S.ledger.filter((l) => l.account_id === aid && (l.extra_id ?? null) === (xid ?? null)).reduce((s, l) => s + Number(l.amount_usd), 0));
+const pwOf = (aid, status) => S.passwords.filter((p) => p.account_id === aid && p.status === status);
+const activePw = (aid) => pwOf(aid, 'active')[0];
+const lockDays = () => Number(S.settings.pin_lock_days ?? 3);
+const pinUnlockMs = (c) => (c.pin_set_at ? new Date(c.pin_set_at).getTime() + lockDays() * 86400000 : 0);
+const pinLocked = (c) => Date.now() < pinUnlockMs(c);
+
+function wallet(a, x) {
+  const cost = x ? Number(x.price_usd) : accountCost(a);
+  const balance = balanceOf(a.id, x ? x.id : null);
+  const next = x ? x.next_billing : a.next_billing;
+  const w = { a, x, cost, balance, next, label: x ? `${a.label} · ${x.label}` : a.label };
+  if (!(cost > 0) || !next) return { ...w, until: null, alert: null };
+  const k = Math.floor((balance + 1e-9) / cost);
+  const until = addMonths(next, k);
+  const short = r2(cost - (balance - k * cost));
+  const d = daysUntil(next);
+  let alert = null;
+  if (d <= 0 && balance < cost) alert = { k: 'late', text: t(`Pa peye! Netflix te dwe retire kòb ${fmtDate(next)}. Manke ${fmt(short, 'USD')}.`, `Impayé ! Netflix devait prélever le ${fmtDate(next)}. Il manque ${fmt(short, 'USD')}.`) };
+  else if (balance < cost && d <= CARD_DAYS) alert = { k: 'soon', text: t(`Manke ${fmt(short, 'USD')} anvan ${fmtDate(next)}.`, `Il manque ${fmt(short, 'USD')} avant le ${fmtDate(next)}.`) };
+  return { ...w, k, until, short, alert };
+}
+function allWallets() {
+  const out = [];
+  S.accounts.filter((a) => a.active).forEach((a) => {
+    out.push(wallet(a, null));
+    activeExtras(a.id).filter((x) => x.billing === 'own').forEach((x) => out.push(wallet(a, x)));
+  });
+  return out;
+}
+
+function clientState(c) {
+  if (c.status === 'left') return { k: '', label: t('Kite', 'Parti') };
+  if (c.status === 'paused') return { k: 'late', label: t('An poz', 'En pause') };
+  const d = daysUntil(c.next_due);
+  if (d < 0) return { k: 'late', label: t(`An reta ${-d} j`, `${-d} j de retard`) };
+  if (d === 0) return { k: 'soon', label: t('Jodi a', "Aujourd'hui") };
+  if (d <= SOON) return { k: 'soon', label: t(`Nan ${d} j`, `Dans ${d} j`) };
+  return { k: 'ok', label: t('A jou', 'À jour') };
+}
+
+// ---------- Mesaj WhatsApp (nan lang kliyan an) ----------
+const phoneDigits = (p) => { let d = String(p || '').replace(/\D/g, ''); if (d.length === 8 && C.COUNTRY_CODE) d = C.COUNTRY_CODE + d; return d; };
+const waUrl = (phone, msg) => `https://wa.me/${phoneDigits(phone)}?text=${encodeURIComponent(msg)}`;
+const firstName = (n) => String(n || '').split(' ')[0];
+const sig = () => `— ${C.BUSINESS_NAME}`;
+const clLang = (c) => (c.lang === 'fr' ? 'fr' : 'ht');
+
+function reminderMsg(c) {
+  const L = clLang(c), n = firstName(c.name), d = fmtDateL(c.next_due, L), p = fmt(c.price, c.currency);
+  const prof = c.profile_name ? tl(L, ` (pwofil "${c.profile_name}")`, ` (profil « ${c.profile_name} »)`) : '';
+  const late = daysUntil(c.next_due) < 0 || c.status === 'paused';
+  return late
+    ? tl(L, `Bonjou ${n}, abònman ${C.SERVICE_NAME} ou${prof} te fini ${d}. Pou n reaktive l, tanpri peye ${p}. Mèsi! ${sig()}`,
+        `Bonjour ${n}, votre abonnement ${C.SERVICE_NAME}${prof} a expiré le ${d}. Pour le réactiver, merci de régler ${p}. Merci ! ${sig()}`)
+    : tl(L, `Bonjou ${n}! Abònman ${C.SERVICE_NAME} ou${prof} ap fini ${d}. Pri a se ${p}. Mèsi paske w peye anvan dat la pou sèvis la pa koupe. ${sig()}`,
+        `Bonjour ${n} ! Votre abonnement ${C.SERVICE_NAME}${prof} expire le ${d}. Le prix est de ${p}. Merci de régler avant cette date pour éviter une coupure. ${sig()}`);
+}
+function passwordMsg(c) {
+  const L = clLang(c), a = acc(c.account_id), pw = activePw(c.account_id);
+  const x = c.slot_type === 'extra' ? ext(c.extra_id) : null;
+  const email = x ? (x.email || '') : ((a && a.login_email) || '');
+  const prof = x ? tl(L, 'Kont manm siplemantè ou a', 'Votre compte membre supplémentaire') : (c.profile_name || '');
+  return tl(L,
+    `Bonjou ${firstName(c.name)}! Men enfòmasyon koneksyon ${C.SERVICE_NAME} ou:\nImèl: ${email}\nModpas: ${pw ? pw.password : ''}\nPwofil: ${prof}\nTanpri pa pataje yo ak lòt moun. Mèsi! ${sig()}`,
+    `Bonjour ${firstName(c.name)} ! Voici vos identifiants ${C.SERVICE_NAME} :\nE-mail : ${email}\nMot de passe : ${pw ? pw.password : ''}\nProfil : ${prof}\nMerci de ne pas les partager. ${sig()}`);
+}
+function pinMsg(c) {
+  const L = clLang(c);
+  const prof = c.profile_name || tl(L, 'ou a', 'votre profil');
+  return tl(L,
+    `Bonjou ${firstName(c.name)}! PIN pwofil ${C.SERVICE_NAME} ou a ("${prof}") se: ${c.pin}\nTanpri pa pataje l. Mèsi! ${sig()}`,
+    `Bonjour ${firstName(c.name)} ! Le code PIN de votre profil ${C.SERVICE_NAME} (« ${prof} ») est : ${c.pin}\nMerci de ne pas le partager. ${sig()}`);
+}
+function paymentMsg(c, amount, currency, months, until) {
+  const L = clLang(c);
+  return tl(L,
+    `Bonjou ${firstName(c.name)}! Nou resevwa peman ou a: ${fmt(amount, currency)} pou ${monthsWord(months, L)}. Abònman ou valab jiska ${fmtDateL(until, L)}. Mèsi! ${sig()}`,
+    `Bonjour ${firstName(c.name)} ! Nous avons bien reçu votre paiement : ${fmt(amount, currency)} pour ${monthsWord(months, L)}. Votre abonnement est valable jusqu’au ${fmtDateL(until, L)}. Merci ! ${sig()}`);
+}
+
+// =====================================================================
+//  Rendering
+// =====================================================================
+const listOr = (items, fn, empty) => items.length ? `<div class="list">${items.map(fn).join('')}</div>` : `<div class="empty">${empty}</div>`;
+const stat = (n, label, k = '') => `<div class="stat ${k}"><b>${n}</b><span>${label}</span></div>`;
+const iconBtn = (action, icon, label, attrs = '') => `<button class="btn icon" data-action="${action}" title="${label}" aria-label="${label}" ${attrs}>${icon}</button>`;
+const slotLabel = (c) => (c.slot_type === 'extra' ? ((ext(c.extra_id) || {}).label || t('Siplemantè', 'Supplémentaire')) : (c.profile_name || ''));
+
+function clientRow(c) {
+  const a = acc(c.account_id);
+  const st = clientState(c);
+  const sub = [a ? a.label : t('San kont', 'Sans compte'), slotLabel(c), fmtDate(c.next_due), fmt(c.price, c.currency)].filter(Boolean).map(esc).join(' · ');
+  const key = c.status === 'active' && a && activePw(a.id) ? iconBtn('send-pw', ICON.key, t('Voye modpas', 'Envoyer le mot de passe'), `data-id="${c.id}"`) : '';
+  const acts = c.status === 'left' ? '' : `${key}${iconBtn('remind', ICON.wa, t('Voye rapèl', 'Envoyer un rappel'), `data-id="${c.id}"`)}
+    <button class="btn primary" data-action="pay" data-id="${c.id}">${t('Peye', 'Payer')}</button>`;
+  return `<div class="row">
+    <div class="info tap" data-action="client" data-id="${c.id}">
+      <div class="t">${esc(c.name)} <span class="badge ${st.k}">${esc(st.label)}</span>${c.slot_type === 'extra' ? `<span class="badge">${t('Siplemantè', 'Suppl.')}</span>` : ''}${c.lang === 'fr' ? '<span class="badge">FR</span>' : ''}</div>
+      <div class="s wrap">${sub}</div>
+    </div>
+    <div class="actions">${acts}</div>
+  </div>`;
+}
+
+function accountRow(a) {
+  const u = mainUsed(a.id);
+  const xs = activeExtras(a.id);
+  const xu = xs.filter((x) => occupant(x.id)).length;
+  const pct = Math.min(100, Math.round((u / a.main_slots) * 100));
+  let badges = a.active ? '' : `<span class="badge">${t('Inaktif', 'Inactif')}</span>`;
+  let sub2 = '';
+  if (isOwner() && a.active) {
+    const ws = [wallet(a, null), ...xs.filter((x) => x.billing === 'own').map((x) => wallet(a, x))];
+    const worst = ws.find((w) => w.alert && w.alert.k === 'late') || ws.find((w) => w.alert);
+    if (worst) badges += `<span class="badge ${worst.alert.k}">${worst.alert.k === 'late' ? t('Pa peye', 'Impayé') : t('Kat kado', 'Carte cadeau')}</span>`;
+    const w = ws[0];
+    sub2 = `<div class="s">${t('Balans', 'Solde')} ${fmt(w.balance, 'USD')}${w.until ? ` · ${t('kouvri jiska', 'couvert jusqu’au')} ${fmtDate(w.until)}` : ''}</div>`;
+  }
+  if (pwOf(a.id, 'pending').length) badges += `<span class="badge soon">${t('Modpas an atant', 'MDP en attente')}</span>`;
+  return `<div class="row">
+    <div class="info tap" data-action="open-account" data-id="${a.id}">
+      <div class="t">${esc(a.label)} ${badges}</div>
+      <div class="s">${t('Nòmal', 'Normales')} ${u}/${a.main_slots} · ${t('Siplemantè', 'Suppl.')} ${xu}/${xs.length}</div>
+      ${sub2}
+      <div class="bar"><i class="${u >= a.main_slots ? 'full' : ''}" style="width:${pct}%"></i></div>
+    </div>
+  </div>`;
+}
+
+// ---------- Jodi a ----------
+function viewToday() {
+  const act = S.clients.filter((c) => c.status === 'active');
+  const byDue = (a, b) => a.next_due.localeCompare(b.next_due);
+  const late = act.filter((c) => daysUntil(c.next_due) < 0).sort(byDue);
+  const soon = act.filter((c) => { const d = daysUntil(c.next_due); return d >= 0 && d <= SOON; }).sort(byDue);
+  const paused = S.clients.filter((c) => c.status === 'paused').sort(byDue);
+  const pend = S.passwords.filter((p) => p.status === 'pending' && acc(p.account_id));
+  const cards = isOwner() ? allWallets().filter((w) => w.alert) : [];
+  const free = S.accounts.filter((a) => a.active).reduce((s, a) => s + Math.max(0, a.main_slots - mainUsed(a.id)) + activeExtras(a.id).filter((x) => !occupant(x.id)).length, 0);
+  return `
+    <div class="hero"><div class="stats">
+      ${stat(act.length, t('Kliyan aktif', 'Clients actifs'))}
+      ${stat(late.length, t('An reta', 'En retard'), late.length ? 'late' : '')}
+      ${stat(soon.length, t(`Pou peye nan ${SOON} j`, `À payer sous ${SOON} j`), soon.length ? 'soon' : '')}
+      ${stat(free, t('Plas lib', 'Places libres'))}
+    </div></div>
+    ${cards.length ? `<h2>${t('Kat kado', 'Cartes cadeaux')}</h2><div class="list">${cards.map((w) => `
+      <div class="row alert-${w.alert.k}">
+        <div class="info tap" data-action="open-account" data-id="${w.a.id}">
+          <div class="t">${esc(w.label)} <span class="badge ${w.alert.k}">${w.alert.k === 'late' ? t('Pa peye', 'Impayé') : t('Talè', 'Bientôt')}</span></div>
+          <div class="s wrap">${esc(w.alert.text)} ${t('Balans', 'Solde')}: ${fmt(w.balance, 'USD')}.</div>
+        </div>
+        <div class="actions"><button class="btn primary" data-action="add-card" data-id="${w.a.id}" data-x="${w.x ? w.x.id : ''}">+ ${t('Kat', 'Carte')}</button></div>
+      </div>`).join('')}</div>` : ''}
+    ${pend.length ? `<h2>${t('Modpas an atant', 'Mots de passe en attente')}</h2><div class="list">${pend.map((p) => `
+      <div class="row alert-soon">
+        <div class="info tap" data-action="open-account" data-id="${p.account_id}">
+          <div class="t">${esc(acc(p.account_id).label)} <span class="badge soon">${t('Poko konfime', 'Non confirmé')}</span></div>
+          <div class="s">${t('Jenere', 'Généré le')} ${fmtDate(p.created_at)} ${t('pa', 'par')} ${esc(who(p.created_by))}</div>
+        </div>
+      </div>`).join('')}</div>` : ''}
+    <h2>${t('An reta', 'En retard')}</h2>${listOr(late, clientRow, t('Pa gen kliyan an reta. 👍', 'Aucun client en retard. 👍'))}
+    <h2>${t('Pou peye talè', 'À payer bientôt')}</h2>${listOr(soon, clientRow, t(`Pa gen peman nan ${SOON} pwochen jou yo.`, `Aucun paiement dans les ${SOON} prochains jours.`))}
+    ${paused.length ? `<h2>${t('An poz (pa peye)', 'En pause (impayé)')}</h2>${listOr(paused, clientRow, '')}` : ''}
+  `;
+}
+
+// ---------- Kliyan ----------
+function filteredClients() {
+  const q = S.q.trim().toLowerCase();
+  return S.clients.filter((c) => {
+    if (q && !(`${c.name} ${c.phone} ${c.profile_name || ''}`.toLowerCase().includes(q))) return false;
+    switch (S.filter) {
+      case 'active': return c.status === 'active';
+      case 'late': return c.status === 'active' && daysUntil(c.next_due) < 0;
+      case 'paused': return c.status === 'paused';
+      case 'extra': return c.slot_type === 'extra' && c.status !== 'left';
+      case 'left': return c.status === 'left';
+      default: return c.status !== 'left';
+    }
+  });
+}
+const clientsList = () => listOr(filteredClients(), clientRow, S.clients.length ? t('Pa gen kliyan ki koresponn.', 'Aucun client correspondant.') : t('Poko gen kliyan. Peze + pou ajoute premye a.', 'Aucun client. Appuyez sur + pour ajouter le premier.'));
+function viewClients() {
+  const chips = [['all', t('Tout', 'Tous')], ['active', t('Aktif', 'Actifs')], ['late', t('An reta', 'En retard')], ['paused', t('An poz', 'En pause')], ['extra', t('Siplemantè', 'Suppl.')], ['left', t('Kite', 'Partis')]]
+    .map(([k, l]) => `<button class="chip ${S.filter === k ? 'on' : ''}" data-action="filter" data-f="${k}">${l}</button>`).join('');
+  return `
+    <input class="search" id="search" type="search" placeholder="${t('Chèche non, nimewo, pwofil…', 'Rechercher nom, numéro, profil…')}" value="${esc(S.q)}">
+    <div class="chips">${chips}</div>
+    <div id="clist">${clientsList()}</div>`;
+}
+
+// ---------- Kont ----------
+function viewAccounts() {
+  if (S.accountId && acc(S.accountId)) return viewAccountDetail(acc(S.accountId));
+  S.accountId = null;
+  const list = [...S.accounts].sort((a, b) => (b.active - a.active) || a.label.localeCompare(b.label));
+  const live = S.accounts.filter((a) => a.active);
+  const cap = live.reduce((s, a) => s + a.main_slots + activeExtras(a.id).length, 0);
+  const used = live.reduce((s, a) => s + mainUsed(a.id) + activeExtras(a.id).filter((x) => occupant(x.id)).length, 0);
+  return `
+    <div class="hero"><div class="stats" style="grid-template-columns:1fr 1fr">${stat(live.length, t('Kont aktif', 'Comptes actifs'))}${stat(`${used}/${cap}`, t('Plas okipe', 'Places occupées'))}</div></div>
+    <h2>${t('Kont yo', 'Comptes')}</h2>
+    ${listOr(list, accountRow, t('Poko gen kont.', 'Aucun compte.'))}`;
+}
+
+function pwRow(p) {
+  return `<div class="pw-row">
+    <span class="pw" data-pw="${esc(p.password)}">••••-••••-••••</span>
+    ${iconBtn('show-pw', ICON.eye, t('Montre / kache', 'Afficher / masquer'))}
+    ${iconBtn('copy', ICON.copy, t('Kopye', 'Copier'), `data-text="${esc(p.password)}"`)}
+  </div>`;
+}
+
+function passwordPanel(a) {
+  const active = activePw(a.id);
+  const pending = pwOf(a.id, 'pending')[0];
+  const olds = pwOf(a.id, 'old').sort((x, y) => String(y.confirmed_at).localeCompare(String(x.confirmed_at)));
+  const xs = activeExtras(a.id);
+  return `<div class="panel">
+    <h3><span class="grow">${t('Modpas', 'Mot de passe')}</span>${pending ? '' : `<button class="btn small" data-action="gen-pw" data-id="${a.id}">${active ? t('Jenere nouvo', 'Générer un nouveau') : t('Mete modpas la', 'Définir')}</button>`}</h3>
+    ${active ? `${pwRow(active)}<div class="sub">${t('Aktif depi', 'Actif depuis le')} ${fmtDate(active.confirmed_at)} · ${esc(who(active.confirmed_by))}${xs.length ? t(' · menm modpas pou manm siplemantè yo', ' · même mot de passe pour les membres suppl.') : ''}</div>
+      <div class="sub">🔑 ${t('Pou voye l, peze kle a bò kote kliyan ki mande l la.', 'Pour l’envoyer, appuyez sur la clé à côté du client qui le demande.')}</div>`
+      : `<div class="empty">${t('Pa gen modpas anrejistre.', 'Aucun mot de passe enregistré.')}</div>`}
+    ${pending ? `<div class="pending">
+      <div class="t">${t('Nouvo modpas an atant', 'Nouveau mot de passe en attente')}</div>
+      ${pwRow(pending)}
+      <ol>
+        <li>${t(`Chanje l sou ${C.SERVICE_NAME} pou kont prensipal la`, `Changez-le sur ${C.SERVICE_NAME} pour le compte principal`)}${xs.length ? t(` ak ${xs.length} manm siplemantè yo`, ` et les ${xs.length} membres suppl.`) : ''}.</li>
+        <li>${t('Peze <b>Konfime</b>. Si w pa t ka chanje l, peze <b>Anile</b>.', 'Appuyez sur <b>Confirmer</b>. Sinon, appuyez sur <b>Annuler</b>.')}</li>
+      </ol>
+      <div class="sub">${t('Moun ki deja konekte yo ap rete konekte.', 'Les personnes déjà connectées le restent.')} · ${t('Jenere pa', 'Généré par')} ${esc(who(pending.created_by))}</div>
+      <div class="fbtns" style="margin:0">
+        <button class="btn" data-action="cancel-pw" data-id="${a.id}">${t('Anile', 'Annuler')}</button>
+        <button class="btn primary" data-action="confirm-pw" data-id="${a.id}">${t('Konfime', 'Confirmer')}</button>
+      </div>
+    </div>` : ''}
+    ${olds.length ? `<details><summary>${t('Ansyen modpas', 'Anciens mots de passe')} (${olds.length})</summary>
+      <div class="list" style="margin-top:8px">${olds.map((p) => `<div>${pwRow(p)}<div class="sub">${t('Te aktive', 'Activé le')} ${fmtDate(p.confirmed_at)} · ${esc(who(p.confirmed_by))}</div></div>`).join('')}</div>
+    </details>` : ''}
+  </div>`;
+}
+
+function ledgerList(aid, xid) {
+  const items = S.ledger.filter((l) => l.account_id === aid && (l.extra_id ?? null) === (xid ?? null)).slice(-8).reverse();
+  if (!items.length) return `<div class="sub">${t('Pa gen mouvman.', 'Aucun mouvement.')}</div>`;
+  const label = { card: t('Kat kado', 'Carte cadeau'), charge: t('Netflix retire', 'Prélèvement'), adjust: t('Koreksyon', 'Correction') };
+  return `<div class="ledger">${items.map((l) => `<div><span>${fmtDate(l.entry_date)} · ${label[l.kind]}${l.kind === 'card' && Number(l.paid_amount) ? ` (${fmt(l.paid_amount, l.paid_currency)})` : ''}</span><b class="${Number(l.amount_usd) < 0 ? 'neg' : 'pos'}">${Number(l.amount_usd) > 0 ? '+' : ''}${fmt(l.amount_usd, 'USD')}</b></div>`).join('')}</div>`;
+}
+
+function walletBox(w) {
+  const xattr = `data-id="${w.a.id}" data-x="${w.x ? w.x.id : ''}"`;
+  let status;
+  if (!(w.cost > 0)) status = `<div class="alert soon">${t('Mete pri chak mwa a.', 'Indiquez le prix mensuel.')}</div>`;
+  else if (w.alert) status = `<div class="alert ${w.alert.k}">${esc(w.alert.text)}</div>`;
+  else status = `<div class="alert ok">${t('Kouvri jiska', 'Couvert jusqu’au')} <b>${fmtDate(w.until)}</b> (${monthsWord(w.k, LANG)}).</div>`;
+  return `<div class="wallet">
+    <div class="kv"><span>${t('Balans', 'Solde')}</span><span class="big">${fmt(w.balance, 'USD')}</span></div>
+    <div class="kv"><span>${t('Pri chak mwa', 'Prix mensuel')}</span><span>${fmt(w.cost, 'USD')}</span></div>
+    <div class="kv"><span>${t('Pwochen retrè', 'Prochain prélèvement')}</span><span>${fmtDate(w.next)}</span></div>
+    ${status}
+    <div class="actions" style="justify-content:flex-start">
+      <button class="btn primary small" data-action="add-card" ${xattr}>+ ${t('Kat kado', 'Carte cadeau')}</button>
+      <button class="btn small" data-action="calc" ${xattr}>${t('Konbyen pou m achte?', 'Combien acheter ?')}</button>
+      <button class="btn small" data-action="adjust" ${xattr}>${t('Korije balans', 'Corriger le solde')}</button>
+    </div>
+    <details><summary>${t('Dènye mouvman', 'Derniers mouvements')}</summary><div style="margin-top:8px">${ledgerList(w.a.id, w.x ? w.x.id : null)}</div></details>
+  </div>`;
+}
+
+function extrasPanel(a) {
+  const xs = activeExtras(a.id);
+  const rows = xs.map((x) => {
+    const occ = occupant(x.id);
+    return `<div class="wallet">
+      <div class="kv"><span><b style="color:var(--text)">${esc(x.label)}</b></span><span>${occ ? esc(occ.name) : `<span class="badge ok">${t('Lib', 'Libre')}</span>`}</span></div>
+      <div class="kv"><span>${t('Imèl', 'E-mail')}</span><span>${esc(x.email || '—')}</span></div>
+      ${isOwner() ? `<div class="kv"><span>${t('Pri', 'Prix')}</span><span>${fmt(x.price_usd, 'USD')} · ${x.billing === 'own' ? t('pwòp kat li', 'sa propre carte') : t('sou kat kont lan', 'carte du compte')}</span></div>` : ''}
+      ${isOwner() && x.billing === 'own' ? walletBox(wallet(a, x)) : ''}
+      ${isOwner() ? `<div class="actions" style="justify-content:flex-start">
+        <button class="btn small" data-action="edit-extra" data-id="${x.id}">${t('Modifye', 'Modifier')}</button>
+        <button class="btn small danger" data-action="retire-extra" data-id="${x.id}">${t('Retire', 'Retirer')}</button>
+      </div>` : ''}
+    </div>`;
+  }).join('');
+  return `<div class="panel">
+    <h3><span class="grow">${t('Manm siplemantè', 'Membres supplémentaires')} (${xs.length}/2)</span>${isOwner() && xs.length < 2 && a.active ? `<button class="btn small" data-action="add-extra" data-id="${a.id}">+ ${t('Ajoute', 'Ajouter')}</button>` : ''}</h3>
+    ${rows || `<div class="sub">${t('Pa gen plas siplemantè.', 'Aucune place supplémentaire.')}</div>`}
+  </div>`;
+}
+
+function viewAccountDetail(a) {
+  const xs = activeExtras(a.id);
+  const shared = xs.filter((x) => x.billing === 'shared');
+  const clients = S.clients.filter((c) => c.account_id === a.id && c.status !== 'left')
+    .sort((x, y) => (x.slot_type === y.slot_type ? x.name.localeCompare(y.name) : x.slot_type === 'main' ? -1 : 1));
+  const costLine = shared.length ? `${fmt(a.plan_price_usd, 'USD')} + ${shared.length} × ${t('siplemantè', 'suppl.')} = <b>${fmt(accountCost(a), 'USD')}</b>` : `<b>${fmt(accountCost(a), 'USD')}</b>`;
+  return `
+    <button class="back" data-action="back">‹ ${t('Kont yo', 'Comptes')}</button>
+    <div class="dtitle"><h2>${esc(a.label)}</h2>${a.active ? '' : `<span class="badge">${t('Inaktif', 'Inactif')}</span>`}${isOwner() ? `<button class="btn small" data-action="edit-account" data-id="${a.id}">${t('Modifye', 'Modifier')}</button>` : ''}</div>
+    <div class="panel">
+      <div class="kv"><span>${t('Imèl', 'E-mail')}</span><span>${esc(a.login_email || '—')} ${a.login_email ? `<button class="btn small" data-action="copy" data-text="${esc(a.login_email)}">${t('Kopye', 'Copier')}</button>` : ''}</span></div>
+      <div class="kv"><span>${t('Plan', 'Forfait')}</span><span>${esc(a.plan)}</span></div>
+      ${isOwner() ? `<div class="kv"><span>${t('Pri chak mwa', 'Prix mensuel')}</span><span>${costLine}</span></div>` : ''}
+      <div class="kv"><span>${t('Plas nòmal', 'Places normales')}</span><span>${mainUsed(a.id)}/${a.main_slots}</span></div>
+    </div>
+    <h2>${t('Modpas', 'Mot de passe')}</h2>${passwordPanel(a)}
+    ${isOwner() ? `<h2>${t('Kat kado', 'Carte cadeau')}</h2><div class="panel">${walletBox(wallet(a, null))}</div>` : ''}
+    <h2>${t('Siplemantè', 'Supplémentaires')}</h2>${extrasPanel(a)}
+    <h2>${t('Kliyan sou kont lan', 'Clients du compte')} (${clients.length})</h2>${listOr(clients, clientRow, t('Pa gen kliyan.', 'Aucun client.'))}
+  `;
+}
+
+// ---------- Lajan ----------
+function viewMoney() {
+  const M = S.money;
+  const modeChips = [['month', t('Yon mwa', 'Un mois')], ['avg', t('Mwayèn', 'Moyenne')]].map(([k, l]) => `<button class="chip ${M.mode === k ? 'on' : ''}" data-action="money-mode" data-v="${k}">${l}</button>`).join('');
+  const curChips = ['HTG', 'USD'].map((k) => `<button class="chip ${M.cur === k ? 'on' : ''}" data-action="money-cur" data-v="${k}">${k}</button>`).join('');
+  const controls = M.mode === 'month'
+    ? `<div class="mrow"><label>${t('Mwa', 'Mois')}<input type="month" id="m-month" value="${M.month}"></label></div>`
+    : `<div class="mrow">
+        <label>${t('Dènye mwa', 'Dernier mois')}<input type="month" id="m-end" value="${M.end}"></label>
+        <label>${t('Kantite mwa', 'Nombre de mois')}<select id="m-count">${[1, 2, 3, 4, 5, 6, 9, 12].map((n) => `<option ${n === M.count ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
+      </div>`;
+  return `
+    <div class="ratebar"><span>${t('To', 'Taux')}: <b>1 USD = ${htgF.format(rate())} HTG</b> <span class="sub">· ${fmtDate(S.settings.updated_at)}</span></span><button class="btn small" data-action="set-rate">${t('Chanje', 'Modifier')}</button></div>
+    <div class="chips">${modeChips}<span style="flex:1"></span>${curChips}</div>
+    ${controls}
+    <div id="mbody"><div class="loading">…</div></div>`;
+}
+const payIn = (p, cur) => conv(p.amount, p.currency, p.rate, cur);
+const cardOut = (l, cur) => conv(l.paid_amount, l.paid_currency || 'HTG', l.paid_rate, cur);
+const cardsBetween = (from, to) => S.ledger.filter((l) => l.kind === 'card' && l.entry_date >= from && l.entry_date <= to);
+
+async function loadMoney() {
+  const M = S.money, cur = M.cur, box = $('#mbody');
+  if (!box) return;
+  try {
+    if (M.mode === 'month') {
+      const from = `${M.month}-01`, to = monthEnd(M.month);
+      const pays = await api.listPayments(from, to);
+      if (!$('#mbody')) return;
+      const cards = cardsBetween(from, to).slice().reverse();
+      const inn = pays.reduce((s, p) => s + payIn(p, cur), 0);
+      const out = cards.reduce((s, l) => s + cardOut(l, cur), 0);
+      const expIn = S.clients.filter((c) => c.status === 'active').reduce((s, c) => s + conv(c.price, c.currency, rate(), cur), 0);
+      const expOut = allWallets().reduce((s, w) => s + conv(w.cost, 'USD', rate(), cur), 0);
+      $('#mbody').innerHTML = `
+        <div class="hero"><div class="money3">
+          ${stat(fmt(inn, cur), t('Antre', 'Entrées'))}${stat(fmt(out, cur), t('Kat kado', 'Cartes'))}${stat(fmt(inn - out, cur), t('Benefis', 'Bénéfice'), inn - out >= 0 ? 'profit' : 'loss')}
+        </div></div>
+        <div class="note" style="margin-top:10px">${t('Chak mwa, ak to jodi a', 'Chaque mois, au taux du jour')}: <b>${fmt(expIn, cur)}</b> ${t('antre si tout moun peye', 'si tous paient')} · <b>${fmt(expOut, cur)}</b> ${t('pou kont yo', 'pour les comptes')} · ${t('benefis prevwa', 'bénéfice prévu')} <b>${fmt(expIn - expOut, cur)}</b>.</div>
+        <h2>${t('Peman kliyan', 'Paiements clients')} (${pays.length})</h2>
+        ${listOr(pays, (p) => `<div class="row"><div class="info"><div class="t">${esc(p.client_name || '')}</div><div class="s">${fmtDate(p.paid_on)} · ${monthsWord(p.months, LANG)} · ${esc(who(p.recorded_by))}${p.currency !== cur ? ` · ${fmt(p.amount, p.currency)}` : ''}</div></div><span class="amt in">+${fmt(payIn(p, cur), cur)}</span></div>`, t('Pa gen peman.', 'Aucun paiement.'))}
+        <h2>${t('Kat kado achte', 'Cartes achetées')} (${cards.length})</h2>
+        ${listOr(cards, (l) => { const a = acc(l.account_id); const x = l.extra_id ? ext(l.extra_id) : null; return `<div class="row"><div class="info"><div class="t">${esc(a ? a.label : '—')}${x ? ` · ${esc(x.label)}` : ''}</div><div class="s">${fmtDate(l.entry_date)} · ${t('kat', 'carte')} ${fmt(l.amount_usd, 'USD')}</div></div><span class="amt out">−${fmt(cardOut(l, cur), cur)}</span></div>`; }, t('Pa gen kat.', 'Aucune carte.'))}`;
+    } else {
+      const first = addMonthsYM(M.end, -(M.count - 1));
+      const pays = await api.listPayments(`${first}-01`, monthEnd(M.end));
+      if (!$('#mbody')) return;
+      const rows = [];
+      for (let i = 0; i < M.count; i++) {
+        const ym = addMonthsYM(first, i);
+        const inn = pays.filter((p) => p.paid_on.slice(0, 7) === ym).reduce((s, p) => s + payIn(p, cur), 0);
+        const out = cardsBetween(`${ym}-01`, monthEnd(ym)).reduce((s, l) => s + cardOut(l, cur), 0);
+        rows.push({ ym, inn, out, prof: inn - out });
+      }
+      const tot = rows.reduce((a, r) => ({ inn: a.inn + r.inn, out: a.out + r.out, prof: a.prof + r.prof }), { inn: 0, out: 0, prof: 0 });
+      const n = rows.length;
+      const cell = (v) => `<td class="${v < 0 ? 'neg' : ''}">${fmt(v, cur)}</td>`;
+      const pcell = (v) => `<td class="${v < 0 ? 'neg' : 'pos'}">${fmt(v, cur)}</td>`;
+      $('#mbody').innerHTML = `
+        <div class="hero"><div class="money3">
+          ${stat(fmt(tot.inn / n, cur), t('Antre / mwa', 'Entrées / mois'))}${stat(fmt(tot.out / n, cur), t('Kat / mwa', 'Cartes / mois'))}${stat(fmt(tot.prof / n, cur), t('Benefis / mwa', 'Bénéfice / mois'), tot.prof >= 0 ? 'profit' : 'loss')}
+        </div></div>
+        <h2>${fmtMonth(first)} → ${fmtMonth(M.end)}</h2>
+        <div class="tablewrap"><table class="avg">
+          <thead><tr><th>${t('Mwa', 'Mois')}</th><th>${t('Antre', 'Entrées')}</th><th>${t('Kat', 'Cartes')}</th><th>${t('Benefis', 'Bénéfice')}</th></tr></thead>
+          <tbody>${rows.map((r) => `<tr><td>${fmtMonth(r.ym)}</td>${cell(r.inn)}${cell(r.out)}${pcell(r.prof)}</tr>`).join('')}</tbody>
+          <tfoot><tr><td>${t('Mwayèn', 'Moyenne')}</td>${cell(tot.inn / n)}${cell(tot.out / n)}${pcell(tot.prof / n)}</tr>
+          <tr><td>Total</td>${cell(tot.inn)}${cell(tot.out)}${pcell(tot.prof)}</tr></tfoot>
+        </table></div>`;
+    }
+  } catch (err) { box.innerHTML = `<div class="empty">${esc(err.message)}</div>`; }
+}
+
+// ---------- Paramèt ak Ekip ----------
+function viewSettings() {
+  const roleName = isPrincipal() ? t('Pwopriyetè prensipal', 'Propriétaire principal') : isOwner() ? t('Pwopriyetè', 'Propriétaire') : t('Asosye', 'Associé');
+  return `
+    <button class="back" data-action="close-view">‹ ${t('Retounen', 'Retour')}</button>
+    <div class="panel">
+      <div class="member"><div class="avatar">${esc(S.me.code || '?')}</div><div class="info"><b>${esc(S.me.name)}</b><div class="sub">${roleName} · ${esc(S.me.email || '')}</div></div></div>
+    </div>
+    <h2>${t('Lang app la', 'Langue de l’application')}</h2>
+    <div class="panel"><div class="seg" style="margin:0">
+      <button class="${LANG === 'ht' ? 'on' : ''}" data-action="lang" data-v="ht">Kreyòl</button>
+      <button class="${LANG === 'fr' ? 'on' : ''}" data-action="lang" data-v="fr">Français</button>
+    </div><div class="sub">${t('Lang mesaj WhatsApp yo depann de chak kliyan (nan fich li).', 'La langue des messages WhatsApp dépend de chaque client (dans sa fiche).')}</div></div>
+    <h2>${t('Aparans', 'Apparence')}</h2>
+    <div class="panel"><div class="seg" style="margin:0;grid-template-columns:1fr 1fr 1fr">
+      <button class="${THEME === 'auto' ? 'on' : ''}" data-action="theme" data-v="auto">${t('Otomatik', 'Auto')}</button>
+      <button class="${THEME === 'light' ? 'on' : ''}" data-action="theme" data-v="light">${t('Klè', 'Clair')}</button>
+      <button class="${THEME === 'dark' ? 'on' : ''}" data-action="theme" data-v="dark">${t('Nwa', 'Sombre')}</button>
+    </div><div class="sub">${t('Otomatik swiv paramèt telefòn ou. Chwa a rete sou aparèy sa a.', 'Auto suit le réglage du téléphone. Le choix est gardé sur cet appareil.')}</div></div>
+    ${isPrincipal() ? `<h2>${t('Ekip', 'Équipe')}</h2><div class="panel"><div class="setrow"><span>${t('Pwopriyetè ak asosye', 'Propriétaires et associés')}</span><button class="btn small" data-action="open-team">${t('Jere ekip la', 'Gérer l’équipe')} ›</button></div></div>` : ''}
+    ${DEMO ? `<h2>Demo</h2><div class="panel">
+      <label>${t('Wè app la kòm', 'Voir l’app en tant que')}<select id="demo-as">${S.users.filter((u) => u.role !== 'pending').map((u) => `<option value="${u.id}" ${u.id === S.me.id ? 'selected' : ''}>${esc(u.name)} (${u.code})</option>`).join('')}</select></label>
+      <button class="btn" data-action="logout">${t('Efase done demo yo', 'Réinitialiser la démo')}</button></div>`
+    : `<div style="margin-top:16px"><button class="btn block danger" data-action="logout">${t('Dekonekte', 'Se déconnecter')}</button></div>`}`;
+}
+
+function viewTeam() {
+  const owners = S.users.filter((u) => u.role === 'owner').sort((a, b) => String(a.code).localeCompare(String(b.code)));
+  const assocs = S.users.filter((u) => u.role === 'associate').sort((a, b) => String(a.code).localeCompare(String(b.code)));
+  const pending = S.users.filter((u) => u.role === 'pending');
+  const member = (u) => `<div class="row"><div class="member" style="flex:1;min-width:0">
+      <div class="avatar">${esc(u.code || '…')}</div>
+      <div class="info"><div class="t">${esc(u.name)}${u.principal ? ` <span class="badge gold">${t('Prensipal', 'Principal')}</span>` : ''}</div><div class="s">${esc(u.email || '')}</div></div>
+      ${u.principal ? '' : `<select data-role="${u.id}" aria-label="${t('Wòl', 'Rôle')}">
+        <option value="owner" ${u.role === 'owner' ? 'selected' : ''}>${t('Pwopriyetè', 'Propriétaire')}</option>
+        <option value="associate" ${u.role === 'associate' ? 'selected' : ''}>${t('Asosye', 'Associé')}</option>
+        <option value="remove">${t('Retire', 'Retirer')}</option></select>`}
+    </div></div>`;
+  return `
+    <button class="back" data-action="back-settings">‹ ${t('Paramèt', 'Paramètres')}</button>
+    <div class="dtitle"><h2>${t('Ekip', 'Équipe')}</h2></div>
+    <h2>${t('Pwopriyetè', 'Propriétaires')} (${owners.length}/${MAX_OWNERS})</h2>${listOr(owners, member, '')}
+    <h2>${t('Asosye', 'Associés')} (${assocs.length}/${MAX_ASSOCS})</h2>${listOr(assocs, member, t('Pa gen asosye.', 'Aucun associé.'))}
+    <h2>${t('An atant', 'En attente')} (${pending.length})</h2>
+    ${listOr(pending, (u) => `<div class="row" style="flex-wrap:wrap"><div class="member" style="flex:1 1 100%;min-width:0"><div class="avatar">?</div><div class="info"><div class="t">${esc(u.name)}</div><div class="s">${esc(u.email || '')}</div></div></div>
+      <div class="actions" style="width:100%"><button class="btn small danger" data-action="member" data-id="${u.id}" data-v="remove">${t('Refize', 'Refuser')}</button>
+      <button class="btn small" data-action="member" data-id="${u.id}" data-v="associate">${t('Asosye', 'Associé')}</button>
+      <button class="btn small primary" data-action="member" data-id="${u.id}" data-v="owner">${t('Pwopriyetè', 'Propriétaire')}</button></div></div>`, t('Pèsonn pa an atant.', 'Personne en attente.'))}
+    <div class="note" style="margin-top:12px">${t('Pou ajoute yon moun: li enskri nan app la ak pwòp imèl li, epi li parèt isit la. Li pa wè anyen toutotan ou pa ba l yon wòl.', 'Pour ajouter quelqu’un : il s’inscrit dans l’app avec son e-mail, puis apparaît ici. Il ne voit rien tant que vous ne lui donnez pas de rôle.')}</div>`;
+}
+
+// ---------- Kò app la ----------
+const TABS = () => [['today', t('Jodi a', "Aujourd'hui"), ICON.today], ['clients', t('Kliyan', 'Clients'), ICON.clients], ['accounts', t('Kont', 'Comptes'), ICON.accounts], ['money', t('Lajan', 'Argent'), ICON.money, true]];
+function renderShell() {
+  app.innerHTML = `
+    ${DEMO ? `<div class="demo">${t('Mòd demo: done egzanp yo rete nan navigatè sa a sèlman.', 'Mode démo : données d’exemple stockées dans ce navigateur.')}</div>` : ''}
+    <header>
+      <h1>${esc(C.BUSINESS_NAME)}</h1>
+      <div class="who"><b>${esc(S.me.name)}</b><br>${esc(S.me.code || '')} · ${isOwner() ? t('Pwopriyetè', 'Propriétaire') : t('Asosye', 'Associé')}</div>
+      ${iconBtn('refresh', ICON.refresh, t('Rafrechi', 'Actualiser'))}
+      ${iconBtn('open-settings', ICON.gear, t('Paramèt', 'Paramètres'))}
+    </header>
+    <main id="main"></main>
+    <button class="fab" id="fab" data-action="add" aria-label="+" hidden>+</button>
+    <nav class="tabs">${TABS().filter((x) => !x[3] || isOwner()).map(([k, l, ic]) => `<button data-action="tab" data-tab="${k}" id="tab-${k}">${ic}<span>${l}</span></button>`).join('')}</nav>`;
+}
+function render() {
+  const main = $('#main');
+  if (!main) return;
+  if (S.tab === 'money' && !isOwner()) S.tab = 'today';
+  if (S.view === 'team' && !isPrincipal()) S.view = 'settings';
+  document.querySelectorAll('nav.tabs button').forEach((b) => b.classList.toggle('on', !S.view && b.dataset.tab === S.tab));
+  $('#fab').hidden = !!S.view || !(S.tab === 'clients' || (S.tab === 'accounts' && !S.accountId && isOwner()));
+  if (S.view === 'settings') main.innerHTML = viewSettings();
+  else if (S.view === 'team') main.innerHTML = viewTeam();
+  else if (S.tab === 'today') main.innerHTML = viewToday();
+  else if (S.tab === 'clients') main.innerHTML = viewClients();
+  else if (S.tab === 'accounts') main.innerHTML = viewAccounts();
+  else if (S.tab === 'money') { main.innerHTML = viewMoney(); loadMoney(); }
+}
+const num = (v) => (v == null ? v : Number(v));
+async function refresh(quiet = false) {
+  try {
+    try { await api.processBilling(); } catch { /* */ }
+    const d = await api.loadAll(isOwner());
+    S.settings = d.settings || S.settings;
+    S.users = d.users || [];
+    S.accounts = d.accounts.map((a) => ({ ...a, id: num(a.id), main_slots: num(a.main_slots), plan_price_usd: num(a.plan_price_usd), extra_price_usd: num(a.extra_price_usd), active: !!a.active }));
+    S.extras = d.extras.map((x) => ({ ...x, id: num(x.id), account_id: num(x.account_id), price_usd: num(x.price_usd), active: !!x.active }));
+    S.clients = d.clients.map((c) => ({ ...c, id: num(c.id), account_id: num(c.account_id), extra_id: num(c.extra_id), price: num(c.price) }));
+    S.passwords = d.passwords.map((p) => ({ ...p, id: num(p.id), account_id: num(p.account_id) }));
+    S.ledger = d.ledger.map((l) => ({ ...l, id: num(l.id), account_id: num(l.account_id), extra_id: num(l.extra_id), amount_usd: num(l.amount_usd), paid_amount: num(l.paid_amount), paid_rate: num(l.paid_rate) }));
+    render();
+  } catch (err) { if (!quiet) toast(err.message); }
+}
+
+// =====================================================================
+//  Fòm (dialog)
+// =====================================================================
+function openForm(html, onSubmit, onReady) {
+  dlg.innerHTML = `<form class="f" novalidate>${html}<div class="err" id="ferr"></div></form>`;
+  const form = $('form', dlg);
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = $('button[type=submit]', form);
+    $('#ferr').textContent = '';
+    if (btn) btn.disabled = true;
+    try { const keep = await onSubmit(new FormData(form), form); if (!keep) dlg.close(); }
+    catch (err) { $('#ferr').textContent = err.message; }
+    finally { if (btn) btn.disabled = false; }
+  });
+  form.addEventListener('click', (e) => { if (e.target.closest('[data-close]')) { e.preventDefault(); dlg.close(); } });
+  if (!dlg.open) dlg.showModal();
+  if (onReady) onReady(form);
+  return form;
+}
+const val = (fd, k) => String(fd.get(k) ?? '').trim();
+const numOrNull = (s) => (s === '' ? null : Number(s));
+const delBtn = () => `<button type="button" class="btn danger" data-delete>${t('Efase', 'Supprimer')}</button>`;
+const formBtns = (left = '', ok = t('Anrejistre', 'Enregistrer')) => `<div class="fbtns">${left}<span class="spacer"></span><button type="button" class="btn" data-close>${t('Anile', 'Annuler')}</button><button type="submit" class="btn primary">${ok}</button></div>`;
+function onDelete(form, question, fn) {
+  const b = $('[data-delete]', form);
+  if (b) b.addEventListener('click', async () => {
+    if (!confirm(question)) return;
+    try { await fn(); dlg.close(); await refresh(); } catch (err) { $('#ferr').textContent = err.message; }
+  });
+}
+// Fenèt "voye sou WhatsApp" ak apèsi mesaj la
+function sendSheet(title, sub, c, msg) {
+  openForm(`
+    <h3>${title}</h3>
+    <p class="sub">${sub}</p>
+    <div class="msg">${esc(msg)}</div>
+    <div class="sub">${t('Lang mesaj la', 'Langue du message')}: ${clLang(c) === 'fr' ? 'Français' : 'Kreyòl'}</div>
+    <div class="fbtns" style="flex-wrap:nowrap"><button type="button" class="btn" data-copy>${ICON.copy}${t('Kopye', 'Copier')}</button>
+      <a style="flex:1" class="btn wa" href="${waUrl(c.phone, msg)}" target="_blank" rel="noopener" data-go>${ICON.wa}${t('Voye sou WhatsApp', 'Envoyer sur WhatsApp')}</a></div>`,
+  async () => {},
+  (form) => {
+    $('[data-copy]', form).addEventListener('click', () => copyText(msg));
+    $('[data-go]', form).addEventListener('click', () => setTimeout(() => dlg.close(), 300));
+  });
+}
+
+// ---------- Fich kliyan ----------
+function clientSheet(c) {
+  const a = acc(c.account_id);
+  const st = clientState(c);
+  const x = c.slot_type === 'extra' ? ext(c.extra_id) : null;
+  const locked = pinLocked(c);
+  const unlock = isoDay(pinUnlockMs(c));
+  const canKey = c.status === 'active' && a && activePw(a.id);
+  openForm(`
+    <h3>${esc(c.name)} <span class="badge ${st.k}">${esc(st.label)}</span></h3>
+    <p class="sub">${esc(c.phone)} · ${clLang(c) === 'fr' ? 'Français' : 'Kreyòl'}</p>
+    <div class="grid3">
+      <button type="button" class="btn" data-act="key" ${canKey ? '' : 'disabled'}>${ICON.key}${t('Modpas', 'MDP')}</button>
+      <button type="button" class="btn" data-act="remind" ${c.status === 'left' ? 'disabled' : ''}>${ICON.wa}${t('Rapèl', 'Rappel')}</button>
+      <button type="button" class="btn primary" data-act="pay" ${c.status === 'left' ? 'disabled' : ''}>${t('Peye', 'Payer')}</button>
+    </div>
+    <div class="panel" style="padding:12px;gap:8px">
+      <div class="kv"><span>${t('Kont', 'Compte')}</span><span>${esc(a ? a.label : '—')}</span></div>
+      <div class="kv"><span>${x ? t('Plas', 'Place') : t('Pwofil', 'Profil')}</span><span>${esc(x ? `${x.label} · ${x.email || ''}` : (c.profile_name || '—'))}</span></div>
+      <div class="kv"><span>${t('Pri', 'Prix')}</span><span>${fmt(c.price, c.currency)} / ${t('mwa', 'mois')}</span></div>
+      <div class="kv"><span>${t('Pwochen peman', 'Prochain paiement')}</span><span>${fmtDate(c.next_due)}</span></div>
+      ${c.notes ? `<div class="sub">${esc(c.notes)}</div>` : ''}
+    </div>
+    <div>
+      <div class="kv" style="margin-bottom:6px"><span><b style="color:var(--text)">PIN</b></span>${c.pin && locked ? `<span class="lock">${ICON.lock}${t('Bloke jiska', 'Bloqué jusqu’au')} ${fmtDate(unlock)}</span>` : '<span></span>'}</div>
+      ${c.pin ? `<div class="pinbox">
+          <span class="pv" data-pin="${esc(c.pin)}">••••</span>
+          <button type="button" class="btn icon" data-act="show-pin" aria-label="${t('Montre', 'Afficher')}">${ICON.eye}</button>
+          <button type="button" class="btn icon" data-act="send-pin" aria-label="${t('Voye PIN', 'Envoyer le PIN')}" ${c.status === 'left' ? 'disabled' : ''}>${ICON.send}</button>
+        </div>
+        <div class="sub" style="margin-top:4px">${t('Mete', 'Défini le')} ${fmtDate(c.pin_set_at)} ${t('pa', 'par')} ${esc(who(c.pin_set_by))}</div>`
+      : `<div class="empty" style="padding:12px">${t('Pa gen PIN anrejistre.', 'Aucun PIN enregistré.')}</div>`}
+      <button type="button" class="btn block" style="margin-top:8px" data-act="set-pin" ${locked ? 'disabled' : ''}>${c.pin ? t('Chanje PIN nan', 'Modifier le PIN') : t('Mete PIN nan', 'Ajouter le PIN')}</button>
+    </div>
+    <div class="fbtns"><button type="button" class="btn" data-act="edit">${t('Modifye fich la', 'Modifier la fiche')}</button><span class="spacer"></span><button type="button" class="btn" data-close>${t('Fèmen', 'Fermer')}</button></div>`,
+  async () => {},
+  (form) => {
+    form.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-act]');
+      if (!b || b.disabled) return;
+      const act = b.dataset.act;
+      if (act === 'key') passwordSheet(c);
+      else if (act === 'remind') sendSheet(t('Voye rapèl', 'Envoyer un rappel'), esc(c.name), c, reminderMsg(c));
+      else if (act === 'pay') payForm(c);
+      else if (act === 'edit') clientForm(c);
+      else if (act === 'set-pin') pinForm(c);
+      else if (act === 'send-pin') sendSheet(t('Voye PIN nan', 'Envoyer le PIN'), esc(c.name), c, pinMsg(c));
+      else if (act === 'show-pin') { const s = $('.pv', form); s.textContent = s.textContent === '••••' ? s.dataset.pin : '••••'; }
+    });
+  });
+}
+function passwordSheet(c) {
+  const a = acc(c.account_id);
+  sendSheet(t('Voye modpas', 'Envoyer le mot de passe'), `${esc(c.name)} · ${esc(a.label)}`, c, passwordMsg(c));
+}
+
+function pinForm(c) {
+  openForm(`
+    <h3>${c.pin ? t('Chanje PIN nan', 'Modifier le PIN') : t('Mete PIN nan', 'Ajouter le PIN')}</h3>
+    <p class="sub">${esc(c.name)}${c.profile_name ? ` · ${t('pwofil', 'profil')} "${esc(c.profile_name)}"` : ''}</p>
+    <label>${t('Nouvo PIN (4 chif)', 'Nouveau PIN (4 chiffres)')}<input class="pin" name="pin" inputmode="numeric" maxlength="4" autocomplete="off" pattern="[0-9]*"></label>
+    <label>${t('Tape l ankò', 'Confirmez')}<input class="pin" name="pin2" inputmode="numeric" maxlength="4" autocomplete="off" pattern="[0-9]*"></label>
+    <div class="alert soon">${ICON.lock.replace('<svg', '<svg width="14" height="14" style="vertical-align:-2px"')} ${t(`Apre w anrejistre l, pèsonn p ap ka chanje l pandan ${lockDays()} jou. Verifye l byen.`, `Après l’enregistrement, personne ne pourra le modifier pendant ${lockDays()} jours. Vérifiez-le bien.`)}</div>
+    ${formBtns('', t('Anrejistre PIN nan', 'Enregistrer le PIN'))}`,
+  async (fd) => {
+    const p1 = val(fd, 'pin'), p2 = val(fd, 'pin2');
+    if (!/^\d{4}$/.test(p1)) throw new Error(t('PIN nan dwe gen 4 chif.', 'Le PIN doit avoir 4 chiffres.'));
+    if (p1 !== p2) throw new Error(t('De PIN yo pa menm.', 'Les deux PIN ne correspondent pas.'));
+    await api.setPin(c.id, p1);
+    await refresh();
+    const fresh = cli(c.id);
+    sendSheet(t('PIN anrejistre ✓', 'PIN enregistré ✓'), t('Voye l bay kliyan an kounye a?', 'L’envoyer au client maintenant ?'), fresh, pinMsg(fresh));
+    return true;
+  },
+  (form) => setTimeout(() => form.pin.focus(), 50));
+}
+
+function clientForm(c, presetAccount) {
+  const isNew = !c;
+  c = c || { name: '', phone: '', account_id: presetAccount || null, slot_type: 'main', extra_id: null, profile_name: '', price: C.DEFAULT_PRICE || '', currency: C.DEFAULT_CURRENCY || 'HTG', lang: 'ht', next_due: todayStr(), status: 'active', notes: '' };
+  const accOpts = S.accounts.filter((a) => a.active || a.id === c.account_id).map((a) => {
+    const self = (c.account_id === a.id && c.slot_type === 'main' && c.status !== 'left') ? 1 : 0;
+    const freeX = activeExtras(a.id).filter((x) => !occupant(x.id) || x.id === c.extra_id).length;
+    return `<option value="${a.id}" ${a.id === c.account_id ? 'selected' : ''}>${esc(a.label)} (${mainUsed(a.id) - self}/${a.main_slots} · ${freeX} ${t('siplemantè lib', 'suppl. libre')})</option>`;
+  }).join('');
+  openForm(`
+    <h3>${isNew ? t('Nouvo kliyan', 'Nouveau client') : t('Modifye kliyan', 'Modifier le client')}</h3>
+    <label>${t('Non', 'Nom')}<input name="name" required value="${esc(c.name)}" autocomplete="off"></label>
+    <div class="grid2">
+      <label>${t('Telefòn (WhatsApp)', 'Téléphone (WhatsApp)')}<input name="phone" type="tel" value="${esc(c.phone)}" placeholder="3400 1122"></label>
+      <label>${t('Lang mesaj', 'Langue des messages')}<select name="lang"><option value="ht" ${c.lang !== 'fr' ? 'selected' : ''}>Kreyòl</option><option value="fr" ${c.lang === 'fr' ? 'selected' : ''}>Français</option></select></label>
+    </div>
+    <label>${t('Kont', 'Compte')}<select name="account_id"><option value="">—</option>${accOpts}</select></label>
+    <div class="grid2">
+      <label>${t('Kalite plas', 'Type de place')}<select name="slot_type">
+        <option value="main" ${c.slot_type === 'main' ? 'selected' : ''}>${t('Pwofil nòmal', 'Profil normal')}</option>
+        <option value="extra" ${c.slot_type === 'extra' ? 'selected' : ''}>${t('Manm siplemantè', 'Membre suppl.')}</option></select></label>
+      <label id="f-profile">${t('Non pwofil', 'Nom du profil')}<input name="profile_name" value="${esc(c.profile_name || '')}"></label>
+      <label id="f-extra" hidden>${t('Ki plas', 'Quelle place')}<select name="extra_id"></select></label>
+    </div>
+    <div class="grid2">
+      <label>${t('Pri chak mwa', 'Prix mensuel')}<div class="money-in"><input name="price" type="number" min="0" step="any" inputmode="decimal" value="${esc(c.price)}"><select name="currency">${curOpts(c.currency)}</select></div></label>
+      <label>${t('Pwochen peman', 'Prochain paiement')}<input name="next_due" type="date" value="${esc(c.next_due)}"></label>
+    </div>
+    <label>${t('Estati', 'Statut')}<select name="status">
+      <option value="active" ${c.status === 'active' ? 'selected' : ''}>${t('Aktif', 'Actif')}</option>
+      <option value="paused" ${c.status === 'paused' ? 'selected' : ''}>${t('An poz (pa peye)', 'En pause (impayé)')}</option>
+      <option value="left" ${c.status === 'left' ? 'selected' : ''}>${t('Kite (libere plas la)', 'Parti (libère la place)')}</option></select></label>
+    <label>${t('Nòt', 'Notes')}<textarea name="notes">${esc(c.notes || '')}</textarea></label>
+    <div class="sub">${t('PIN nan jere nan fich kliyan an.', 'Le PIN se gère dans la fiche client.')}</div>
+    ${formBtns(!isNew && isOwner() ? delBtn() : '')}`,
+  async (fd) => {
+    const obj = {
+      name: val(fd, 'name'), phone: val(fd, 'phone'), lang: val(fd, 'lang'),
+      account_id: numOrNull(val(fd, 'account_id')), slot_type: val(fd, 'slot_type'),
+      extra_id: val(fd, 'slot_type') === 'extra' ? numOrNull(val(fd, 'extra_id')) : null,
+      profile_name: val(fd, 'slot_type') === 'main' ? (val(fd, 'profile_name') || null) : null,
+      price: Number(val(fd, 'price')) || 0, currency: val(fd, 'currency'),
+      next_due: val(fd, 'next_due'), status: val(fd, 'status'), notes: val(fd, 'notes') || null,
+    };
+    if (!obj.name) throw new Error(t('Mete non kliyan an.', 'Indiquez le nom du client.'));
+    if (!obj.phone) throw new Error(t('Mete nimewo telefòn nan.', 'Indiquez le téléphone.'));
+    if (!obj.next_due) throw new Error(t('Mete dat pwochen peman an.', 'Indiquez la date du prochain paiement.'));
+    if (obj.slot_type === 'extra' && !obj.extra_id) throw new Error(t('Pa gen plas siplemantè lib sou kont sa a.', 'Aucune place supplémentaire libre sur ce compte.'));
+    if (!isNew) obj.id = c.id;
+    await api.saveClient(obj);
+    await refresh();
+    toast(isNew ? t('Kliyan ajoute.', 'Client ajouté.') : t('Chanjman yo anrejistre.', 'Modifications enregistrées.'));
+  },
+  (form) => {
+    onDelete(form, t(`Efase ${c.name}?`, `Supprimer ${c.name} ?`), async () => { await api.deleteClient(c.id); });
+    const sync = () => {
+      const aid = Number(form.account_id.value) || null;
+      const isX = form.slot_type.value === 'extra';
+      $('#f-profile', form).hidden = isX;
+      $('#f-extra', form).hidden = !isX;
+      const xs = aid ? activeExtras(aid).filter((x) => !occupant(x.id) || x.id === c.extra_id) : [];
+      form.extra_id.innerHTML = xs.length ? xs.map((x) => `<option value="${x.id}" ${x.id === c.extra_id ? 'selected' : ''}>${esc(x.label)}</option>`).join('') : `<option value="">${t('Pa gen plas lib', 'Aucune place libre')}</option>`;
+    };
+    form.account_id.addEventListener('change', sync);
+    form.slot_type.addEventListener('change', sync);
+    sync();
+  });
+}
+
+function payForm(c) {
+  openForm(`
+    <h3>${t('Peman', 'Paiement')}</h3>
+    <p class="sub">${esc(c.name)} · ${t('dat kounye a', 'échéance actuelle')}: ${fmtDate(c.next_due)}</p>
+    <div class="grid2">
+      <label>${t('Montan', 'Montant')}<div class="money-in"><input name="amount" type="number" min="0" step="any" inputmode="decimal" value="${esc(c.price)}"><select name="currency">${curOpts(c.currency)}</select></div></label>
+      <label>${t('Pou konbyen mwa', 'Pour combien de mois')}<select name="months">${[1, 2, 3, 6, 12].map((m) => `<option value="${m}">${monthsWord(m, LANG)}</option>`).join('')}</select></label>
+    </div>
+    <div class="note">${t('Nouvo dat', 'Nouvelle échéance')}: <b id="newdue">${fmtDate(dueAfterPayment(c.next_due, 1))}</b></div>
+    ${formBtns('', t('Konfime peman', 'Confirmer le paiement'))}`,
+  async (fd) => {
+    if (val(fd, 'amount') === '' || !(Number(val(fd, 'amount')) >= 0)) throw new Error(t('Mete montan an.', 'Indiquez le montant.'));
+    const amount = Number(val(fd, 'amount')), currency = val(fd, 'currency'), months = Number(val(fd, 'months')) || 1;
+    const until = await api.recordPayment(c.id, amount, currency, months);
+    await refresh();
+    receiptSheet(cli(c.id) || c, amount, currency, months, until);
+    return true;
+  },
+  (form) => form.months.addEventListener('change', () => {
+    const m = Number(form.months.value);
+    $('#newdue').textContent = fmtDate(dueAfterPayment(c.next_due, m));
+    if (form.currency.value === c.currency) form.amount.value = r2((Number(c.price) || 0) * m);
+  }));
+}
+function receiptSheet(c, amount, currency, months, until) {
+  const msg = paymentMsg(c, amount, currency, months, until);
+  openForm(`
+    <div class="receipt">
+      <div class="ok-ic">✓</div>
+      <h3 style="margin-top:6px">${t('Peman anrejistre', 'Paiement enregistré')}</h3>
+      <div class="amtbig">${fmt(amount, currency)}</div>
+      <div class="sub">${esc(c.name)} · ${monthsWord(months, LANG)} · ${t('valab jiska', 'valable jusqu’au')} <b>${fmtDate(until)}</b></div>
+    </div>
+    <div class="msg">${esc(msg)}</div>
+    <div class="fbtns"><button type="button" class="btn" data-close>${t('Fèmen', 'Fermer')}</button><span class="spacer"></span>
+      <a class="btn wa" href="${waUrl(c.phone, msg)}" target="_blank" rel="noopener" data-go>${ICON.wa}${t('Voye konfimasyon', 'Envoyer la confirmation')}</a></div>`,
+  async () => {},
+  (form) => $('[data-go]', form).addEventListener('click', () => setTimeout(() => dlg.close(), 300)));
+}
+
+// ---------- Kont, siplemantè, kat, modpas ----------
+function accountForm(a) {
+  const isNew = !a;
+  a = a || { label: `Kont ${String.fromCharCode(65 + (S.accounts.length % 26))}`, login_email: '', plan: 'Premium', plan_price_usd: '', extra_price_usd: '', main_slots: 4, next_billing: todayStr(), notes: '', active: true };
+  openForm(`
+    <h3>${isNew ? t('Nouvo kont', 'Nouveau compte') : t('Modifye kont', 'Modifier le compte')}</h3>
+    <div class="grid2"><label>${t('Non', 'Nom')}<input name="label" value="${esc(a.label)}"></label><label>${t('Plan', 'Forfait')}<input name="plan" value="${esc(a.plan || '')}"></label></div>
+    <label>${t('Imèl kont lan', 'E-mail du compte')}<input name="login_email" type="email" value="${esc(a.login_email || '')}"></label>
+    <div class="grid2">
+      <label>${t('Pri plan ($/mwa)', 'Prix forfait ($/mois)')}<input name="plan_price_usd" type="number" min="0" step="0.01" value="${esc(a.plan_price_usd)}" placeholder="13.50"></label>
+      <label>${t('Pri siplemantè ($/mwa)', 'Prix suppl. ($/mois)')}<input name="extra_price_usd" type="number" min="0" step="0.01" value="${esc(a.extra_price_usd)}" placeholder="6.99"></label>
+    </div>
+    <div class="grid2">
+      <label>${t('Plas nòmal', 'Places normales')}<select name="main_slots">${[1, 2, 3, 4, 5].map((n) => `<option ${Number(a.main_slots) === n ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
+      <label>${t('Pwochen retrè', 'Prochain prélèvement')}<input name="next_billing" type="date" value="${esc(a.next_billing)}"></label>
+    </div>
+    <label>${t('Nòt', 'Notes')}<textarea name="notes">${esc(a.notes || '')}</textarea></label>
+    <label class="check"><input type="checkbox" name="active" ${a.active ? 'checked' : ''}> ${t('Kont aktif', 'Compte actif')}</label>
+    ${formBtns(!isNew ? delBtn() : '')}`,
+  async (fd) => {
+    const obj = { label: val(fd, 'label'), plan: val(fd, 'plan') || 'Premium', login_email: val(fd, 'login_email') || null, plan_price_usd: r2(val(fd, 'plan_price_usd')), extra_price_usd: r2(val(fd, 'extra_price_usd')), main_slots: Number(val(fd, 'main_slots')) || 4, next_billing: val(fd, 'next_billing'), notes: val(fd, 'notes') || null, active: fd.get('active') === 'on' };
+    if (!obj.label || !obj.next_billing) throw new Error(t('Mete non ak dat retrè a.', 'Indiquez le nom et la date de prélèvement.'));
+    if (!isNew) { obj.id = a.id; if (obj.main_slots < mainUsed(a.id)) throw new Error(t('Gen twòp kliyan sou kont lan pou kantite sa a.', 'Trop de clients pour ce nombre de places.')); }
+    await api.saveAccount(obj);
+    await refresh();
+  },
+  (form) => onDelete(form, t(`Efase ${a.label} nèt?`, `Supprimer ${a.label} définitivement ?`), async () => { await api.deleteAccount(a.id); S.accountId = null; }));
+}
+function extraForm(a, x) {
+  const isNew = !x;
+  x = x || { account_id: a.id, label: `${t('Siplemantè', 'Supplémentaire')} ${activeExtras(a.id).length + 1}`, email: '', billing: 'shared', price_usd: a.extra_price_usd || '', next_billing: a.next_billing, active: true };
+  openForm(`
+    <h3>${isNew ? t('Nouvo plas siplemantè', 'Nouvelle place supplémentaire') : t('Modifye plas la', 'Modifier la place')}</h3>
+    <div class="grid2"><label>${t('Non', 'Nom')}<input name="label" value="${esc(x.label)}"></label><label>${t('Pri ($/mwa)', 'Prix ($/mois)')}<input name="price_usd" type="number" min="0" step="0.01" value="${esc(x.price_usd)}"></label></div>
+    <label>${t('Imèl manm nan', 'E-mail du membre')}<input name="email" type="email" value="${esc(x.email || '')}"></label>
+    <label>${t('Kijan li peye', 'Mode de paiement')}<select name="billing"><option value="shared" ${x.billing === 'shared' ? 'selected' : ''}>${t('Sou kat kont lan', 'Carte du compte')}</option><option value="own" ${x.billing === 'own' ? 'selected' : ''}>${t('Pwòp kat pa l', 'Sa propre carte')}</option></select></label>
+    <label id="f-nb">${t('Pwochen retrè', 'Prochain prélèvement')}<input name="next_billing" type="date" value="${esc(x.next_billing || a.next_billing)}"></label>
+    ${formBtns()}`,
+  async (fd) => {
+    const obj = { account_id: a.id, label: val(fd, 'label'), email: val(fd, 'email') || null, price_usd: r2(val(fd, 'price_usd')), billing: val(fd, 'billing'), next_billing: val(fd, 'billing') === 'own' ? (val(fd, 'next_billing') || null) : null, active: true };
+    if (!isNew) obj.id = x.id;
+    await api.saveExtra(obj);
+    await refresh();
+  },
+  (form) => { const s = () => { $('#f-nb', form).hidden = form.billing.value !== 'own'; }; form.billing.addEventListener('change', s); s(); });
+}
+function walletFrom(el) { const a = acc(Number(el.dataset.id)); const x = el.dataset.x ? ext(Number(el.dataset.x)) : null; return wallet(a, x); }
+function coverText(w, add) {
+  if (!(w.cost > 0)) return '';
+  const months = Math.floor((add + 1e-9) / w.cost), rest = r2(add - months * w.cost);
+  const part = rest > 0 ? t(`${months} mwa + ${fmt(rest, 'USD')} rès`, `${months} mois + ${fmt(rest, 'USD')} de reste`) : t(`${months} mwa egzak`, `${months} mois exactement`);
+  const nb = r2(w.balance + add);
+  return `${t('Kat sa a', 'Cette carte')} = <b>${part}</b>. ${t('Nouvo balans', 'Nouveau solde')}: <b>${fmt(nb, 'USD')}</b> → ${t('kouvri jiska', 'couvert jusqu’au')} <b>${fmtDate(addMonths(w.next, Math.floor((nb + 1e-9) / w.cost)))}</b>.`;
+}
+function cardForm(w) {
+  openForm(`
+    <h3>${t('Ajoute kat kado', 'Ajouter une carte cadeau')}</h3>
+    <p class="sub">${esc(w.label)} · ${fmt(w.cost, 'USD')}/${t('mwa', 'mois')} · ${t('balans', 'solde')} ${fmt(w.balance, 'USD')}</p>
+    <div class="grid2"><label>${t('Montan kat la ($)', 'Montant ($)')}<input name="usd" type="number" min="0" step="0.01" value="${w.cost > 0 ? r2(w.cost * 2) : ''}"></label><label>${t('Dat', 'Date')}<input name="date" type="date" value="${todayStr()}"></label></div>
+    <label>${t('Sa w te peye pou li', 'Prix payé')}<div class="money-in"><input name="paid" type="number" min="0" step="any" placeholder="3600"><select name="paid_currency">${curOpts('HTG')}</select></div></label>
+    <div class="note" id="f-cover"></div>
+    ${formBtns('', t('Ajoute kat la', 'Ajouter'))}`,
+  async (fd) => {
+    const usd = r2(val(fd, 'usd'));
+    if (!(usd > 0)) throw new Error(t('Mete montan kat la.', 'Indiquez le montant.'));
+    await api.addCard(w.a.id, w.x ? w.x.id : null, usd, Number(val(fd, 'paid')) || 0, val(fd, 'paid_currency'), val(fd, 'date') || todayStr());
+    await refresh();
+  },
+  (form) => { const s = () => { $('#f-cover', form).innerHTML = coverText(w, Number(form.usd.value) || 0); }; form.usd.addEventListener('input', s); s(); });
+}
+function calcForm(w) {
+  openForm(`
+    <h3>${t('Konbyen pou m achte?', 'Combien acheter ?')}</h3>
+    <p class="sub">${esc(w.label)} · ${fmt(w.cost, 'USD')}/${t('mwa', 'mois')}</p>
+    <label>${t('Pou konbyen mwa', 'Pour combien de mois')}<select name="m">${[1, 2, 3, 4, 5, 6, 12].map((n) => `<option ${n === 2 ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
+    <div class="note" id="f-calc"></div>
+    <div class="fbtns"><span class="spacer"></span><button type="button" class="btn" data-close>${t('Fèmen', 'Fermer')}</button></div>`,
+  async () => {},
+  (form) => {
+    const s = () => {
+      const m = Number(form.m.value), full = r2(w.cost * m), rest = r2(Math.max(0, w.balance) % (w.cost || 1));
+      $('#f-calc', form).innerHTML = `${fmt(w.cost, 'USD')} × ${m} = <b>${fmt(full, 'USD')}</b>` + (rest > 0.004 ? `<br>${t(`Ak ${fmt(rest, 'USD')} ki deja sou balans lan: ${fmt(r2(full - rest), 'USD')}`, `Avec ${fmt(rest, 'USD')} déjà sur le solde : ${fmt(r2(full - rest), 'USD')}`)}` : '');
+    };
+    form.m.addEventListener('change', s); s();
+  });
+}
+function adjustForm(w) {
+  openForm(`
+    <h3>${t('Korije balans', 'Corriger le solde')}</h3>
+    <p class="sub">${esc(w.label)} · ${t('app la di', 'l’app indique')} ${fmt(w.balance, 'USD')}</p>
+    <label>${t('Balans Netflix montre a ($)', 'Solde affiché par Netflix ($)')}<input name="bal" type="number" min="0" step="0.01" value="${w.balance}"></label>
+    ${formBtns('', t('Korije', 'Corriger'))}`,
+  async (fd) => { await api.adjustBalance(w.a.id, w.x ? w.x.id : null, r2(val(fd, 'bal'))); await refresh(); });
+}
+function genPwForm(a) {
+  openForm(`
+    <h3>${t('Nouvo modpas', 'Nouveau mot de passe')}</h3>
+    <p class="sub">${esc(a.label)}</p>
+    <label>${t('Modpas', 'Mot de passe')}<div class="pw-row"><input name="pw" value="${generatePassword()}" autocomplete="off" spellcheck="false" style="font-family:ui-monospace,Menlo,Consolas,monospace"><button type="button" class="btn icon" data-regen>${ICON.refresh}</button></div></label>
+    <div class="note">${t('Li rete an atant jiskaske w konfime ou chanje l sou Netflix.', 'Il reste en attente jusqu’à confirmation du changement sur Netflix.')}</div>
+    ${formBtns('', t('Kenbe l an atant', 'Mettre en attente'))}`,
+  async (fd) => { if (val(fd, 'pw').length < 8) throw new Error(t('Omwen 8 karaktè.', 'Au moins 8 caractères.')); await api.proposePassword(a.id, val(fd, 'pw')); await refresh(); },
+  (form) => $('[data-regen]', form).addEventListener('click', () => { form.pw.value = generatePassword(); }));
+}
+function rateForm() {
+  openForm(`
+    <h3>${t('To dola', 'Taux du dollar')}</h3>
+    <label>1 USD = ? HTG<input name="rate" type="number" min="0" step="0.01" value="${rate()}"></label>
+    <div class="note">${t('Peman ak kat ki deja anrejistre yo kenbe to jou yo te fèt la.', 'Les paiements et cartes déjà enregistrés gardent le taux de leur date.')}</div>
+    ${formBtns()}`,
+  async (fd) => { const r = Number(val(fd, 'rate')); if (!(r > 0)) throw new Error('?'); await api.setRate(r); await refresh(); });
+}
+
+// =====================================================================
+//  Evènman
+// =====================================================================
+document.addEventListener('click', async (e) => {
+  const el = e.target.closest('[data-action]');
+  if (!el || (dlg.open && dlg.contains(el))) return;
+  const id = Number(el.dataset.id);
+  try {
+    switch (el.dataset.action) {
+      case 'tab': S.view = null; S.tab = el.dataset.tab; if (S.tab === 'accounts') S.accountId = null; render(); window.scrollTo(0, 0); break;
+      case 'filter': S.filter = el.dataset.f; render(); break;
+      case 'refresh': await refresh(); toast(t('Done yo ajou.', 'Données à jour.')); break;
+      case 'open-settings': S.view = 'settings'; render(); window.scrollTo(0, 0); break;
+      case 'close-view': S.view = null; render(); break;
+      case 'open-team': S.view = 'team'; render(); break;
+      case 'back-settings': S.view = 'settings'; render(); break;
+      case 'lang': LANG = el.dataset.v; store.set('gf-lang', LANG); document.documentElement.lang = LANG; renderShell(); render(); break;
+      case 'theme': THEME = el.dataset.v; store.set('gf-theme', THEME); applyTheme(); render(); break;
+      case 'member': await api.setMemberRole(el.dataset.id, el.dataset.v); await refresh(); break;
+      case 'logout':
+        if (!confirm(DEMO ? t('Efase done demo yo?', 'Réinitialiser la démo ?') : t('Dekonekte?', 'Se déconnecter ?'))) return;
+        await api.signOut(); location.reload(); break;
+      case 'add': if (S.tab === 'accounts') accountForm(); else clientForm(null); break;
+      case 'client': clientSheet(cli(id)); break;
+      case 'pay': payForm(cli(id)); break;
+      case 'remind': { const c = cli(id); sendSheet(t('Voye rapèl', 'Envoyer un rappel'), esc(c.name), c, reminderMsg(c)); break; }
+      case 'send-pw': passwordSheet(cli(id)); break;
+      case 'open-account': S.view = null; S.tab = 'accounts'; S.accountId = id; render(); window.scrollTo(0, 0); break;
+      case 'back': S.accountId = null; render(); break;
+      case 'edit-account': accountForm(acc(id)); break;
+      case 'add-extra': extraForm(acc(id)); break;
+      case 'edit-extra': { const x = ext(id); extraForm(acc(x.account_id), x); break; }
+      case 'retire-extra': if (!confirm(t('Retire plas sa a?', 'Retirer cette place ?'))) return; await api.saveExtra({ id, active: false }); await refresh(); break;
+      case 'add-card': cardForm(walletFrom(el)); break;
+      case 'calc': calcForm(walletFrom(el)); break;
+      case 'adjust': adjustForm(walletFrom(el)); break;
+      case 'gen-pw': genPwForm(acc(id)); break;
+      case 'confirm-pw': if (!confirm(t('Ou chanje modpas la sou Netflix?', 'Avez-vous changé le mot de passe sur Netflix ?'))) return; await api.confirmPassword(id); await refresh(); break;
+      case 'cancel-pw': await api.cancelPassword(id); await refresh(); break;
+      case 'show-pw': { const s = $('.pw', el.closest('.pw-row')); s.textContent = s.textContent.startsWith('•') ? s.dataset.pw : '••••-••••-••••'; break; }
+      case 'copy': await copyText(el.dataset.text); break;
+      case 'set-rate': rateForm(); break;
+      case 'money-mode': S.money.mode = el.dataset.v; render(); break;
+      case 'money-cur': S.money.cur = el.dataset.v; render(); break;
+    }
+  } catch (err) { toast(err.message); }
+});
+document.addEventListener('input', (e) => { if (e.target.id === 'search') { S.q = e.target.value; $('#clist').innerHTML = clientsList(); } });
+document.addEventListener('change', async (e) => {
+  const id = e.target.id;
+  if (id === 'm-month' && e.target.value) { S.money.month = e.target.value; loadMoney(); }
+  if (id === 'm-end' && e.target.value) { S.money.end = e.target.value; loadMoney(); }
+  if (id === 'm-count') { S.money.count = Number(e.target.value); loadMoney(); }
+  if (id === 'demo-as') { api.viewAs(e.target.value); S.me = await api.me(); renderShell(); await refresh(); }
+  if (e.target.dataset.role) {
+    try { await api.setMemberRole(e.target.dataset.role, e.target.value); } catch (err) { toast(err.message); }
+    await refresh();
+  }
+});
+document.addEventListener('visibilitychange', () => { if (!document.hidden && S.me && !dlg.open) refresh(true); });
+
+// =====================================================================
+//  Koneksyon / Enskripsyon
+// =====================================================================
+function showLogin(msg = '', mode = 'in') {
+  app.innerHTML = `
+    <div class="login">
+      <div class="brand"><h1>${esc(C.BUSINESS_NAME)}</h1><p>${t('Jesyon kliyan ak kont', 'Gestion des clients et des comptes')}</p></div>
+      <div class="card">
+        <div class="seg"><button data-mode="in" class="${mode === 'in' ? 'on' : ''}">${t('Konekte', 'Connexion')}</button><button data-mode="up" class="${mode === 'up' ? 'on' : ''}">${t('Enskri', 'Inscription')}</button></div>
+        <form class="f" id="loginf">
+          ${mode === 'up' ? `<label>${t('Non ou', 'Votre nom')}<input name="name" required autocomplete="name"></label>` : ''}
+          <label>${t('Imèl', 'E-mail')}<input name="email" type="email" required autocomplete="username"></label>
+          <label>${t('Modpas', 'Mot de passe')}<input name="password" type="password" required autocomplete="${mode === 'up' ? 'new-password' : 'current-password'}"></label>
+          ${mode === 'up' ? `<div class="note">${t('Apre w enskri, pwopriyetè prensipal la dwe ba w yon wòl anvan ou ka wè anyen.', 'Après l’inscription, le propriétaire principal doit vous attribuer un rôle.')}</div>` : ''}
+          <div class="err" id="lerr">${esc(msg)}</div>
+          <button type="submit" class="btn primary block">${mode === 'up' ? t('Enskri', 'S’inscrire') : t('Konekte', 'Se connecter')}</button>
+        </form>
+      </div>
+      <div class="seg" style="margin:16px 40px 0"><button class="${LANG === 'ht' ? 'on' : ''}" data-lg="ht">Kreyòl</button><button class="${LANG === 'fr' ? 'on' : ''}" data-lg="fr">Français</button></div>
+    </div>`;
+  app.querySelectorAll('[data-mode]').forEach((b) => b.addEventListener('click', () => showLogin('', b.dataset.mode)));
+  app.querySelectorAll('[data-lg]').forEach((b) => b.addEventListener('click', () => { LANG = b.dataset.lg; store.set('gf-lang', LANG); showLogin('', mode); }));
+  $('#loginf').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const btn = $('button[type=submit]', e.target);
+    btn.disabled = true; $('#lerr').textContent = '';
+    try {
+      if (mode === 'up') {
+        const hasSession = await api.signUp(val(fd, 'name'), val(fd, 'email'), String(fd.get('password')));
+        if (hasSession) return start();
+        return showLogin(t('Kont ou kreye. Gade imèl ou pou konfime l, epi konekte.', 'Compte créé. Confirmez votre e-mail puis connectez-vous.'), 'in');
+      }
+      await api.signIn(val(fd, 'email'), String(fd.get('password'))); await start();
+    } catch (err) { $('#lerr').textContent = err.message; btn.disabled = false; }
+  });
+}
+function showWaiting() {
+  app.innerHTML = `<div class="login"><div class="brand"><h1>${esc(C.BUSINESS_NAME)}</h1></div>
+    <div class="panel" style="text-align:center"><b>${t('Demann ou an voye ✓', 'Demande envoyée ✓')}</b><div class="sub">${t('Pwopriyetè prensipal la dwe aksepte w. Retounen pita.', 'Le propriétaire principal doit vous accepter. Revenez plus tard.')}</div>
+    <button class="btn" data-action="logout">${t('Dekonekte', 'Se déconnecter')}</button></div></div>`;
+}
+async function start() {
+  const s = await api.session();
+  if (!s) return showLogin();
+  S.me = await api.me();
+  if (S.me && S.me.role === 'none') { await api.requestAccess(); S.me = await api.me(); }
+  if (!S.me || !['owner', 'associate'].includes(S.me.role)) return showWaiting();
+  renderShell();
+  await refresh();
+}
+
+(async () => {
+  try {
+    if (DEMO) api = demoApi();
+    else {
+      const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+      api = supabaseApi(createClient(C.SUPABASE_URL, C.SUPABASE_ANON_KEY));
+    }
+    if (DEMO && new URLSearchParams(location.search).has('login')) showLogin('', new URLSearchParams(location.search).get('login') === 'up' ? 'up' : 'in');
+    else await start();
+  } catch (err) {
+    app.innerHTML = `<div class="login"><div class="empty">${esc(err.message)}</div></div>`;
+  }
+  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+})();
+</script>
+</body>
+</html>
